@@ -1,14 +1,16 @@
-import { join } from "path";
+const path = require("path");
 
-export const reactStrictMode = true;
-export const trailingSlash = true;
-export function webpackDevMiddleware(config) {
-  config.watchOptions = {
-    poll: 1000,
-    aggregateTimeout: 300,
-  };
-  return config;
-}
-export const sassOptions = {
-  includePaths: [join(__dirname, "styles")],
+module.exports = {
+  reactStrictMode: true,
+  trailingSlash: true,
+  webpackDevMiddleware: (config) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 300,
+    };
+    return config;
+  },
+  sassOptions: {
+    includePaths: [path.join(__dirname, "styles")],
+  },
 };

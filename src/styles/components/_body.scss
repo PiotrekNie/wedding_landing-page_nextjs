@@ -1,7 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Roboto', 'arial', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @apply text-blue text-xl;
+  @apply text-black text-base leading-normal font-sans;
 }
