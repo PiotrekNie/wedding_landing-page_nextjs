@@ -1,0 +1,12 @@
+.gallery,
+.faq {
+  @apply pt-80 relative;
+
+  &.show {
+    &:before {
+      content: "";
+
+      @apply w-px h-56 absolute left-1/2 -translate-x-1/2 bg-black top-0;
+    }
+  }
+}

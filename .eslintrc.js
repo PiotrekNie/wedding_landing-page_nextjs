@@ -1,50 +1,71 @@
 module.exports = {
-  root: true,
   env: {
     browser: true,
-    amd: true,
-    node: true,
+    es6: true,
+  },
+  parser: "@typescript-eslint/parser",
+  extends: ["airbnb", "eslint:recommended", "plugin:prettier/recommended", "prettier"],
+  plugins: ["prettier"],
+  globals: {
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly",
   },
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2019,
     sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
   settings: {
     react: {
-      version: "detect",
+      version: "latest",
+    },
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
     },
   },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended",
-  ],
-  plugins: ["simple-import-sort"],
   rules: {
-    "prettier/prettier": ["error", {}, { usePrettierrc: true }],
-    "react/prop-types": "off",
-    "react/react-in-jsx-scope": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "@typescript-eslint/no-unused-vars": ["error"],
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "react/no-unescaped-entities": "off",
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-namespace": "off",
-    "@typescript-eslint/no-var-requires": 0,
+    "max-len": ["warn", 530],
+    "no-empty": 1,
+    "linebreak-style": [1, "unix"],
+    quotes: [2, "single"],
+    "no-unused-expressions": [
+      1,
+      {
+        allowTernary: true,
+      },
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
   },
   overrides: [
     {
-      files: ["**/*.ts", "**/*.tsx"],
-      parser: "@typescript-eslint/parser",
+      files: ["*.ts", "*.tsx"],
+      extends: ["plugin:@typescript-eslint/recommended"],
+      rules: {
+        "@typescript-eslint/typedef": [
+          "error",
+          {
+            arrayDestructuring: true,
+            objectDestructuring: true,
+            arrowParameter: true,
+            variableDeclaration: true,
+            memberVariableDeclaration: true,
+            parameter: true,
+            propertyDeclaration: true,
+          },
+        ],
+        "@typescript-eslint/no-inferrable-types": [0],
+        "@typescript-eslint/member-ordering": ["error"],
+      },
     },
   ],
 };

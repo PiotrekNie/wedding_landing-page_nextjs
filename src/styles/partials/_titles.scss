@@ -1,0 +1,4 @@
+h2 {
+  @include fluid-type(42, 72, 480, 1200);
+  @apply font-bold leading-none;
+}

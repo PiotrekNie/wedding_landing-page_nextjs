@@ -1,9 +1,6 @@
 // Align
 @mixin transform($string) {
-  -webkit-transform: $string;
-  -moz-transform: $string;
-  -ms-transform: $string;
-  -o-transform: $string;
+  transform: $string;
 }
 
 @mixin center($xy: xy) {
@@ -12,14 +9,17 @@
     right: auto;
     bottom: auto;
     left: 50%;
+
     @include transform(translateX(-50%) translateY(-50%));
   } @else if $xy == x {
     right: auto;
     left: 50%;
+
     @include transform(translateX(-50%));
   } @else if $xy == y {
     top: 50%;
     bottom: auto;
+
     @include transform(translateY(-50%));
   }
 }

@@ -1,10 +1,9 @@
-import { GraphQLClient, gql } from "graphql-request";
-
 import { RichText } from "@graphcms/rich-text-react-renderer";
-
 import { RichTextContent } from "@graphcms/rich-text-types";
-
+import { gql, GraphQLClient } from "graphql-request";
 import Head from "next/head";
+import GallerySection from "./components/gallery";
+import { Map } from "./components/googleMaps";
 
 interface Question {
   id: string;
@@ -16,8 +15,18 @@ interface Question {
   };
 }
 
-interface Questions {
+interface Gallery {
+  id: string;
+  images: {
+    id: string;
+    url: string;
+    fileName: string;
+  }[];
+}
+
+interface Sections {
   qas: Question[];
+  galleries: Gallery[];
 }
 
 export const getStaticProps = async () => {
@@ -34,6 +43,14 @@ export const getStaticProps = async () => {
           raw
         }
       }
+      galleries {
+        id
+        images {
+          id
+          url
+          fileName
+        }
+      }
     }
   `;
 
@@ -46,27 +63,33 @@ export const getStaticProps = async () => {
   };
 };
 
-export default function Home({ data }: { data: Questions }) {
+export default function Home({ data }: { data: Sections }) {
   return (
     <div>
       <Head>
         <title>Delfina&amp;Piotek</title>
-        <meta name="description" content="Zapraszamy :)" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name='description' content='Zapraszamy :)' />
+        <link rel='icon' href='/favicon.ico' />
       </Head>
 
       <main>
-        <section className="container max-w-fhd px-2 md:px-4">
-          <div className="flex justify-center">
-            <div className="md:w-10/12 f-full">
-              <div className="grid grid-cols-10 gap-x-4">
-                <div className="md:col-span-4">
-                  <h2>Wszystko co musisz wiedzieć...</h2>
+        <Map />
+        <GallerySection galleries={data.galleries} />
+        <section className='container max-w-fhd px-2 md:px-4 faq show'>
+          <div className='flex justify-center'>
+            <div className='md:w-11/12 f-full'>
+              <div className='grid grid-cols-10 gap-x-4'>
+                <div className='md:col-span-4'>
+                  <h2 className='sticky top-0'>
+                    Wszystko <br />
+                    co musisz <br />
+                    wiedzieć...
+                  </h2>
                 </div>
-                <div className="md:col-span-6 grid md:grid-cols-2 gap-x-10">
+                <div className='md:col-span-6 grid md:grid-cols-2 gap-x-10'>
                   {data?.qas?.map((q: Question) => (
-                    <div key={q.id} className="md:mb-20 mb-12">
-                      <h3 className="mb-8">{q.question}</h3>
+                    <div key={q.id} className='md:mb-20 mb-12'>
+                      <h3 className='mb-8'>{q.question}</h3>
 
                       <RichText content={q.answer.raw.children} />
                     </div>

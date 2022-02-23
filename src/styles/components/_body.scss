@@ -1,6 +1,8 @@
 body {
   margin: 0;
+  background: #ffffff url("../../../public/images/paper.webp") scroll repeat left top;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
   @apply text-black text-base leading-normal font-sans;
 }

@@ -4,9 +4,9 @@
   font-size: #{$font-min}px;
 
   @media only screen and (min-width: #{$screen-min}px) {
-    font-size: calc(
-      #{$font-min}px + #{($font-max - $font-min)} * (100vw - #{$screen-min}px) / (#{$screen-max} - #{$screen-min})
-    );
+    // tslint:disable-next-line:max-line-length
+    // prettier-ignore
+    font-size: calc(#{$font-min}px + #{($font-max - $font-min)} * (100vw - #{$screen-min}px) / (#{$screen-max} - #{$screen-min}));
   }
 
   @media only screen and (min-width: #{$screen-max}px) {

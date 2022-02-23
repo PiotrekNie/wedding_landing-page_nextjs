@@ -1,0 +1,68 @@
+.gallery {
+  &__container {
+    &--col {
+      @apply relative;
+
+      &.obj-0 {
+        @apply h-80 shadow-xl shadow-gray-300;
+      }
+
+      &.obj-1 {
+        height: 420px;
+      }
+
+      &.obj-2 {
+        height: 385px;
+
+        @media screen and (min-width: $lg) {
+          margin-bottom: -185px;
+        }
+      }
+
+      &.obj-3 {
+        height: 385px;
+
+        @apply col-span-2;
+      }
+
+      &.obj-4 {
+        @apply h-80 shadow-xl shadow-gray-300 relative z-10;
+
+        @media screen and (min-width: $lg) {
+          margin-bottom: -120px;
+        }
+
+        &:before,
+        &:after {
+          content: "";
+
+          @apply w-full h-full absolute block;
+        }
+
+        &:before {
+          background: $white url("../../../public/images/paper.webp") scroll repeat left top;
+
+          @apply left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-0 pointer-events-none;
+        }
+
+        &:after {
+          background: transparent url("../../../public/images/dots.webp") scroll repeat left top;
+
+          @apply -z-3 -right-9 -bottom-9;
+        }
+      }
+
+      img {
+        @apply w-full h-full object-cover;
+      }
+    }
+
+    &--img {
+      @apply absolute transition duration-300 ease-linear w-full h-full;
+
+      &:not(.show) {
+        @apply -z-3 pointer-events-none opacity-0;
+      }
+    }
+  }
+}
