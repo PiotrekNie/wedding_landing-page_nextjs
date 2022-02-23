@@ -1,4 +1,8 @@
-export const COLORS = {
+type ColorType = {
+  [key: string]: string | { [key: number]: string | number };
+};
+
+const COLORS: ColorType = {
   black: "0, 0, 0",
   green: "#d3da24",
   orange: "#fecd4d",
@@ -8,7 +12,9 @@ export const COLORS = {
   peach: "#f4baa6",
   yellow: "#fecd4d",
   gray: {
-    "600": "88, 88, 88",
-    "800": "58, 58, 58",
+    600: "88, 88, 88",
+    800: "58, 58, 58",
   },
 };
+
+export default COLORS;

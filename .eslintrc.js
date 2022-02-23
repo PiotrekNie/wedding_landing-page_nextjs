@@ -16,7 +16,7 @@ module.exports = {
   },
   settings: {
     react: {
-      version: "latest",
+      version: "detect",
     },
     "import/resolver": {
       node: {
@@ -25,10 +25,12 @@ module.exports = {
     },
   },
   rules: {
+    "react/jsx-filename-extension": [2, { extensions: [".js", ".jsx", ".ts", ".tsx"] }],
+    "no-param-reassign": 0,
     "max-len": ["warn", 530],
     "no-empty": 1,
     "linebreak-style": [1, "unix"],
-    quotes: [2, "single"],
+    quotes: [2, "double"],
     "no-unused-expressions": [
       1,
       {
@@ -45,6 +47,16 @@ module.exports = {
         tsx: "never",
       },
     ],
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        extendDefaults: true,
+        types: {
+          "{}": false,
+        },
+      },
+    ],
+    "react/jsx-props-no-spreading": "off",
   },
   overrides: [
     {

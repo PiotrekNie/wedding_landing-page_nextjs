@@ -1,9 +1,10 @@
+import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { RichTextContent } from "@graphcms/rich-text-types";
 import { gql, GraphQLClient } from "graphql-request";
 import Head from "next/head";
 import GallerySection from "./components/gallery";
-import { Map } from "./components/googleMaps";
+import Map from "./components/googleMaps";
 
 interface Question {
   id: string;
@@ -29,12 +30,13 @@ interface Sections {
   galleries: Gallery[];
 }
 
-export const getStaticProps = async () => {
-  const endpoint = "https://api-eu-central-1.graphcms.com/v2/ckyhcar7j1w6j01xg1moc82pk/master";
+export const getStaticProps: () => void = async () => {
+  const endpoint: string =
+    "https://api-eu-central-1.graphcms.com/v2/ckyhcar7j1w6j01xg1moc82pk/master";
 
-  const graphQLClient = new GraphQLClient(endpoint);
+  const graphQLClient: GraphQLClient = new GraphQLClient(endpoint);
 
-  const query = gql`
+  const query: string = gql`
     {
       qas {
         id
@@ -54,7 +56,7 @@ export const getStaticProps = async () => {
     }
   `;
 
-  const data = await graphQLClient.request(query);
+  const data: GraphQLClient = await graphQLClient.request(query);
 
   return {
     props: {

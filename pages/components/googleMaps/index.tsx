@@ -1,28 +1,28 @@
 import React from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
-import styled from "styled-components";
-import { COLORS } from "../colors";
+import styled, { StyledComponent } from "styled-components";
+import COLORS from "../colors";
 
 /**
  * Images
  */
 // import Icon from "images/marker_wedding.svg";
 
-const MapContainer = styled.div`
+const MapContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   box-shadow: -34px 34px 46px rgba(${COLORS.gray[800]}, 0.34), -51px 41px 0 ${COLORS.yellow};
 `;
 
-const containerStyle = {
+const containerStyle: { width: string; height: string } = {
   width: "100%",
   height: "507px",
 };
 
-const center = {
+const center: { lat: number; lng: number } = {
   lat: 51.2888875,
   lng: 17.9094308,
 };
 
-const styles = [
+const styles: google.maps.MapTypeStyle[] | null | undefined = [
   {
     featureType: "water",
     elementType: "geometry",
@@ -233,11 +233,11 @@ const styles = [
   },
 ];
 
-const onLoad = (marker: any) => {
-  console.log("marker: ", marker);
-};
+// const onLoad = (marker: any) => {
+//   console.log("marker: ", marker);
+// };
 
-export function Map() {
+function Map() {
   return (
     <MapContainer>
       <LoadScript googleMapsApiKey='AIzaSyCrvvUQqeJYgEv_lpakC_PAZPKCjbAT57Y'>
@@ -245,12 +245,14 @@ export function Map() {
           mapContainerStyle={containerStyle}
           center={center}
           zoom={10}
-          options={{ styles: styles }}>
-          <Marker onLoad={onLoad} position={center} icon={"images/marker_wedding.svg"} />
+          options={{ styles }}>
+          <Marker position={center} icon='images/marker_wedding.svg' />
           {/* Child components, such as markers, info windows, etc. */}
-          <></>
+          {/* <></> */}
         </GoogleMap>
       </LoadScript>
     </MapContainer>
   );
 }
+
+export default Map;

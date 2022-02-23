@@ -14,7 +14,7 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
-  webpack: (config, options) => {
+  webpack: (config) => {
     config.plugins.push(new StylelintPlugin());
 
     return config;
