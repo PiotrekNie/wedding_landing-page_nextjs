@@ -133,13 +133,13 @@ export default function Home({ data }: { data: Sections }) {
             </div>
           </div>
         </Section>
-        <Section className='container max-w-fhd px-2 md:px-4 gallery show beforeline overflow-hidden'>
+        <Section className='container max-w-fhd px-2 md:px-4 gallery show beforeline md:overflow-visible overflow-hidden'>
           <div className='flex justify-center'>
             <div className='lg:w-11/12 w-full'>
               <div className='lg:grid grid-cols-10 gap-x-4 '>
                 <div className='lg:col-span-4 lg:pb-0 pb-6'>
                   <div className='sticky top-0'>
-                    <h2 className='lg:mb-0 mb-6'>
+                    <h2 className='mb-8'>
                       Masz pytanie, <br />
                       zadzwoń :)
                     </h2>

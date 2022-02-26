@@ -21,4 +21,10 @@
   &:after {
     @apply border border-black z-0;
   }
+
+  &:hover {
+    &:before {
+      transform: translate(6px, -6px);
+    }
+  }
 }

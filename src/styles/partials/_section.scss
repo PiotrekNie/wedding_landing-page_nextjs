@@ -20,7 +20,7 @@
     @apply font-light flex items-center flex-wrap;
 
     &:not(:last-child) {
-      @apply mb-8;
+      @apply mb-4;
     }
   }
 }
