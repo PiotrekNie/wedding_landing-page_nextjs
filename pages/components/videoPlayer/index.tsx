@@ -2,7 +2,7 @@ import React from "react";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import fluidType from "../fluid-typography";
-import SCREENS from "../screens";
+import SCREENS from "../../../components/screens";
 
 const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styled.video`
   transform: translate(-50%, -50%);

@@ -4,7 +4,7 @@ import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import Button from "../button";
 import fluidType from "../fluid-typography";
-import SCREENS from "../screens";
+import SCREENS from "../../../components/screens";
 
 // images
 import Church from "../../../public/images/Ruchna-1.webp";
