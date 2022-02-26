@@ -8,13 +8,18 @@
       }
 
       &.obj-1 {
-        height: 420px;
+        height: 360px;
+
+        @media screen and (min-width: $lg) {
+          height: 420px;
+        }
       }
 
       &.obj-2 {
-        height: 385px;
+        height: 360px;
 
         @media screen and (min-width: $lg) {
+          height: 385px;
           margin-bottom: -185px;
         }
       }
@@ -26,7 +31,7 @@
       }
 
       &.obj-4 {
-        @apply h-80 shadow-xl shadow-gray-300 relative z-10;
+        @apply lg:h-80 h-full shadow-xl shadow-gray-300 relative z-10;
 
         @media screen and (min-width: $lg) {
           margin-bottom: -120px;

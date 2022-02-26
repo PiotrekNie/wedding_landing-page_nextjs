@@ -10,6 +10,7 @@ interface ButtonTypes {
 const ButtonItem: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
   line-height: 30px;
   max-width: 170px;
+  min-width: 170px;
   font-size: 14px;
 
   ${tw`

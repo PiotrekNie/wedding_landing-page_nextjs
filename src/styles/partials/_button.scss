@@ -1,0 +1,24 @@
+.btn {
+  max-width: 170px;
+  font-size: 14px;
+  line-height: 30px;
+
+  @apply w-full flex justify-center tracking-tighter text-center relative z-10 font-bold;
+
+  &:before,
+  &:after {
+    content: "";
+
+    @apply w-full h-full block absolute left-0 top-0 pointer-events-none;
+  }
+
+  &:before {
+    transform: translate(-6px, 6px);
+
+    @apply bg-yellow transition-transform duration-200 ease-out -z-3;
+  }
+
+  &:after {
+    @apply border border-black z-0;
+  }
+}

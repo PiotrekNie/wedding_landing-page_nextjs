@@ -1,7 +1,9 @@
 import React from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import styled, { StyledComponent } from "styled-components";
+import { useMediaQuery } from "react-responsive";
 import tw from "twin.macro";
+import SCREENS from "../../../components/screens";
 
 /**
  * Images
@@ -13,11 +15,6 @@ const MapContainer: StyledComponent<"div", Record<string, unknown>, {}, never> =
     shadow-xl
   `}
 `;
-
-const containerStyle: { width: string; height: string } = {
-  width: "100%",
-  height: "507px",
-};
 
 const center: { lat: number; lng: number } = {
   lat: 52.3737603,
@@ -251,6 +248,13 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
 // };
 
 function Map() {
+  const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+
+  const containerStyle: { width: string; height: string } = {
+    width: "100%",
+    height: isDesktop ? "507px" : "300px",
+  };
+
   return (
     <MapContainer>
       <LoadScript googleMapsApiKey='AIzaSyCrvvUQqeJYgEv_lpakC_PAZPKCjbAT57Y'>

@@ -1,11 +1,26 @@
 .beforeline {
-  @apply pt-80 relative;
+  @apply lg:pt-80 pt-48 relative;
 
   &.show {
     &:before {
       content: "";
 
-      @apply w-px h-80 absolute left-1/2 -translate-x-1/2 bg-black top-0;
+      @apply w-px lg:h-80 h-36 absolute left-1/2 -translate-x-1/2 bg-black top-0;
+    }
+  }
+}
+
+.map {
+  @apply lg:pt-80 pt-36;
+}
+
+.gallery {
+  p {
+    @include fluid-type(14, 36, 480, 1200);
+    @apply font-light flex items-center flex-wrap;
+
+    &:not(:last-child) {
+      @apply mb-8;
     }
   }
 }

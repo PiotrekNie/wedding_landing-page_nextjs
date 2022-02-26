@@ -12,19 +12,25 @@ import Ruchenka from "../../../public/images/Ruchna-2.webp";
 
 const ImageContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
-    relative shadow-xl block
+    relative shadow-xl block md:h-auto h-80 w-full
   `}
+
+  span {
+    ${tw`
+      max-h-full
+    `}
+  }
 `;
 
 const TimeLineItem: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
-    grid grid-cols-8 items-center
+    md:grid grid-cols-8 items-center
   `}
 `;
 
 const TextContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
-    relative z-10 pt-20
+    relative z-10 md:pt-20 md:pb-0 pb-10 md:block flex flex-col items-center
   `}
 `;
 
@@ -42,7 +48,7 @@ const Hour: StyledComponent<
   ${fluidType("480px", SCREENS.xl, "70px", "151px")}
 
   ${tw`
-    text-yellow font-serif font-bold tracking-tighter flex items-center leading-none absolute top-0 -z-3
+    text-yellow font-serif font-bold tracking-tighter flex items-center leading-none md:absolute md:m-0 mx-auto top-0 -z-3
   `}
   
   sup {
@@ -76,8 +82,8 @@ const Paragraph: StyledComponent<"p", Record<string, unknown>, {}, never> = styl
 function TimeLine() {
   return (
     <>
-      <TimeLineItem>
-        <ImageContainer className='dots md:col-span-3'>
+      <TimeLineItem className='md:grid flex flex-col-reverse'>
+        <ImageContainer className='dots md:col-span-3 sm:col-span-6'>
           <Image
             src={Church}
             alt='Parafia pw. Najświętszej Maryi Panny Matki Kościoła w Ruchnie'
@@ -85,7 +91,7 @@ function TimeLine() {
             placeholder='blur'
           />
         </ImageContainer>
-        <TextContainer className='md:col-start-5 md:col-span-4'>
+        <TextContainer className='md:col-start-5 md:col-span-4 sm:col-span-6 md:text-left text-center'>
           <Hour direction='left'>
             17<sup>00</sup>
           </Hour>
@@ -95,7 +101,7 @@ function TimeLine() {
         </TextContainer>
       </TimeLineItem>
       <TimeLineItem className='pt-14'>
-        <TextContainer className='md:col-span-4 md:text-right'>
+        <TextContainer className='md:col-span-4 md:text-right text-center'>
           <Hour direction='right'>
             18<sup>00</sup>
           </Hour>

@@ -112,54 +112,54 @@ export default function Home({ data }: { data: Sections }) {
       </Head>
 
       <main>
-        <Section className='video show pt-36 pb-40' id='video'>
+        <Section className='video show lg:pt-36 pt-20 pb-40' id='video'>
           <div className='flex justify-center'>
-            <div className='md:w-8/12 f-full relative'>
+            <div className='md:w-8/12 w-full relative'>
               <SectionVideo />
             </div>
           </div>
         </Section>
-        <Section className='timeline show beforeline' id='timeline'>
+        <Section className='timeline show beforeline overflow-hidden' id='timeline'>
           <div className='flex justify-center'>
-            <div className='md:w-8/12 f-full'>
+            <div className='md:w-8/12 w-full'>
               <TimeLine />
             </div>
           </div>
         </Section>
         <Section className='map show beforeline' id='map'>
           <div className='flex justify-center'>
-            <div className='md:w-8/12 f-full p-5 border-2 border-black'>
+            <div className='lg:w-8/12 w-full md:p-5 p-3 border-2 border-black'>
               <Map />
             </div>
           </div>
         </Section>
-        <Section className='container max-w-fhd px-2 md:px-4 gallery show beforeline'>
+        <Section className='container max-w-fhd px-2 md:px-4 gallery show beforeline overflow-hidden'>
           <div className='flex justify-center'>
-            <div className='md:w-11/12 f-full'>
-              <div className='grid grid-cols-10 gap-x-4'>
-                <div className='md:col-span-4'>
+            <div className='lg:w-11/12 w-full'>
+              <div className='lg:grid grid-cols-10 gap-x-4 '>
+                <div className='lg:col-span-4 lg:pb-0 pb-6'>
                   <div className='sticky top-0'>
-                    <h2>
+                    <h2 className='lg:mb-0 mb-6'>
                       Masz pytanie, <br />
                       zadzwoń :)
                     </h2>
-                    <div className='text-4xl'>
+                    <div>
                       <p>
                         Delfina{" "}
-                        <a href='tel:+48508093384' className='btn'>
+                        <a href='tel:+48508093384' className='btn ml-4'>
                           +48 508 093 384
                         </a>
                       </p>
                       <p>
                         Piotrek{" "}
-                        <a href='tel:+48509235952' className='btn'>
+                        <a href='tel:+48509235952' className='btn ml-4'>
                           +48 509 235 952
                         </a>
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className='md:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 gap-5 items-end gallery__container'>
+                <div className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 md:gap-5 gap-y-5 items-end gallery__container'>
                   {galleries.map((galleryItems: Gallery, index: number) => {
                     const id: Gallery = galleryItems;
                     const num: number = index;
@@ -186,16 +186,16 @@ export default function Home({ data }: { data: Sections }) {
         </Section>
         <Section className='faq show beforeline'>
           <div className='flex justify-center'>
-            <div className='md:w-11/12 f-full'>
-              <div className='grid grid-cols-10 gap-x-4'>
-                <div className='md:col-span-4'>
+            <div className='lg:w-11/12 w-full'>
+              <div className='md:grid grid-cols-10 gap-x-4'>
+                <div className='md:col-span-4 md:mb-0 mb-10'>
                   <h2 className='sticky top-0'>
                     Wszystko <br />
                     co musisz <br />
                     wiedzieć...
                   </h2>
                 </div>
-                <div className='md:col-span-6 grid md:grid-cols-2 gap-x-10'>
+                <div className='md:col-span-6 grid lg:md:grid-cols-2 gap-x-10'>
                   {qas?.map((q: Question) => (
                     <div key={q.id} className='md:mb-20 mb-12'>
                       <h3 className='mb-8'>{q.question}</h3>

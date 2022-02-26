@@ -17,7 +17,7 @@ const VideoContainer: StyledComponent<"div", Record<string, unknown>, {}, never>
   padding-top: 41.25%;
 
   ${tw`
-    relative w-full mb-20
+    relative w-full lg:mb-20 mb-12
   `}
 `;
 

@@ -2,3 +2,8 @@ h2 {
   @include fluid-type(42, 72, 480, 1200);
   @apply font-bold leading-none;
 }
+
+h3 {
+  @include fluid-type(18, 30, 480, 1200);
+  @apply font-bold leading-none;
+}
