@@ -1,0 +1,12 @@
+.timeline {
+  .dots {
+    @apply shadow-xl shadow-gray-300 z-10;
+
+    &:after {
+      content: "";
+      background: transparent url("../../../public/images/dots.webp") scroll repeat left top;
+
+      @apply w-full h-full absolute block -z-3 -right-10 -bottom-10;
+    }
+  }
+}

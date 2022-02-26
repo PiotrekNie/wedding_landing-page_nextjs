@@ -8,6 +8,7 @@ module.exports = {
     fontFamily: {
       sans: ["Lato", "Arial", "sans-serif"],
       serif: ["baskerville-display-pt", "serif"],
+      perpetua: ["Perpetua", "baskerville-display-pt", "serif"],
     },
     colors: {
       transparent: "transparent",

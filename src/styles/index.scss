@@ -9,9 +9,11 @@
 @import "mixins";
 
 // Components
+@import "components/fonts";
 @import "components/body";
 
 // Partials
 @import "partials/titles";
 @import "partials/section";
 @import "partials/gallery";
+@import "partials/timeline";

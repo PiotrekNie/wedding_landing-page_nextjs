@@ -58,7 +58,7 @@ function GallerySection(props: Section): JSX.Element {
   });
 
   return (
-    <section className='container max-w-fhd px-2 md:px-4 gallery show'>
+    <section className='container max-w-fhd px-2 md:px-4 gallery show beforeline'>
       <div className='flex justify-center'>
         <div className='md:w-11/12 f-full'>
           <div className='grid grid-cols-10 gap-x-4'>

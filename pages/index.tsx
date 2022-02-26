@@ -2,9 +2,14 @@ import React from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { RichTextContent } from "@graphcms/rich-text-types";
 import { gql, GraphQLClient } from "graphql-request";
+import styled, { StyledComponent } from "styled-components";
+import tw from "twin.macro";
+// Partials
 import Head from "next/head";
 import GallerySection from "./components/gallery";
 import Map from "./components/googleMaps";
+import TimeLine from "./components/timeLine";
+import SectionVideo from "./components/videoPlayer";
 
 interface Question {
   id: string;
@@ -29,6 +34,12 @@ interface Sections {
   qas: Question[];
   galleries: Gallery[];
 }
+
+const Section: StyledComponent<"section", Record<string, unknown>, {}, never> = styled.section`
+  ${tw`
+    container max-w-fhd px-2 md:px-4
+  `}
+`;
 
 export const getStaticProps: () => void = async () => {
   const endpoint: string =
@@ -75,9 +86,29 @@ export default function Home({ data }: { data: Sections }) {
       </Head>
 
       <main>
-        <Map />
+        <Section className='video show pt-36 pb-40' id='video'>
+          <div className='flex justify-center'>
+            <div className='md:w-8/12 f-full relative'>
+              <SectionVideo />
+            </div>
+          </div>
+        </Section>
+        <Section className='timeline show beforeline' id='timeline'>
+          <div className='flex justify-center'>
+            <div className='md:w-8/12 f-full'>
+              <TimeLine />
+            </div>
+          </div>
+        </Section>
+        <Section className='map show beforeline' id='map'>
+          <div className='flex justify-center'>
+            <div className='md:w-8/12 f-full p-5 border-2 border-black'>
+              <Map />
+            </div>
+          </div>
+        </Section>
         <GallerySection galleries={data.galleries} />
-        <section className='container max-w-fhd px-2 md:px-4 faq show'>
+        <Section className='faq show beforeline'>
           <div className='flex justify-center'>
             <div className='md:w-11/12 f-full'>
               <div className='grid grid-cols-10 gap-x-4'>
@@ -100,7 +131,7 @@ export default function Home({ data }: { data: Sections }) {
               </div>
             </div>
           </div>
-        </section>
+        </Section>
       </main>
     </div>
   );

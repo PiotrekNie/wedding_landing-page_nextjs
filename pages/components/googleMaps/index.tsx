@@ -1,7 +1,7 @@
 import React from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import styled, { StyledComponent } from "styled-components";
-import COLORS from "../colors";
+import tw from "twin.macro";
 
 /**
  * Images
@@ -9,7 +9,9 @@ import COLORS from "../colors";
 // import Icon from "images/marker_wedding.svg";
 
 const MapContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
-  box-shadow: -34px 34px 46px rgba(${COLORS.gray[800]}, 0.34), -51px 41px 0 ${COLORS.yellow};
+  ${tw`
+    shadow-xl
+  `}
 `;
 
 const containerStyle: { width: string; height: string } = {
@@ -18,8 +20,18 @@ const containerStyle: { width: string; height: string } = {
 };
 
 const center: { lat: number; lng: number } = {
-  lat: 51.2888875,
-  lng: 17.9094308,
+  lat: 52.3737603,
+  lng: 22.0601653,
+};
+
+const marker1: { lat: number; lng: number } = {
+  lat: 52.3747729,
+  lng: 22.0600774,
+};
+
+const marker2: { lat: number; lng: number } = {
+  lat: 52.3734603,
+  lng: 22.0656,
 };
 
 const styles: google.maps.MapTypeStyle[] | null | undefined = [
@@ -28,10 +40,10 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry",
     stylers: [
       {
-        color: "#e9e9e9",
+        color: "#a8bbcc",
       },
       {
-        lightness: 17,
+        lightness: 50,
       },
     ],
   },
@@ -40,26 +52,23 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry",
     stylers: [
       {
-        color: "#00aaff",
+        color: "#f5f2ea",
       },
       {
-        lightness: 80,
+        lightness: 30,
       },
     ],
   },
   {
     stylers: [
       {
-        hue: "#00aaff",
-      },
-      {
-        saturation: -80,
+        saturation: 0,
       },
       {
         gamma: 1,
       },
       {
-        lightness: 12,
+        lightness: 6,
       },
     ],
   },
@@ -77,7 +86,7 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry.fill",
     stylers: [
       {
-        color: "#ffffff",
+        color: "#dad8cd",
       },
       {
         lightness: 17,
@@ -89,7 +98,7 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry.stroke",
     stylers: [
       {
-        color: "#ffffff",
+        color: "#dad8cd",
       },
       {
         lightness: 29,
@@ -104,7 +113,7 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry",
     stylers: [
       {
-        color: "#ffffff",
+        color: "#dad8cd",
       },
       {
         lightness: 18,
@@ -116,10 +125,10 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
     elementType: "geometry",
     stylers: [
       {
-        color: "#ffffff",
+        color: "#dad8cd",
       },
       {
-        lightness: 16,
+        lightness: 50,
       },
     ],
   },
@@ -157,10 +166,10 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
         visibility: "on",
       },
       {
-        color: "#ffffff",
+        color: "#f1f0ea",
       },
       {
-        lightness: 16,
+        lightness: 30,
       },
     ],
   },
@@ -171,7 +180,7 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
         saturation: 36,
       },
       {
-        color: "#3e4852",
+        color: "#bab6a4",
       },
       {
         lightness: 40,
@@ -231,6 +240,10 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
       },
     ],
   },
+  {
+    elementType: "labels.icon",
+    stylers: [{ visibility: "off" }],
+  },
 ];
 
 // const onLoad = (marker: any) => {
@@ -244,11 +257,10 @@ function Map() {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={10}
+          zoom={15}
           options={{ styles }}>
-          <Marker position={center} icon='images/marker_wedding.svg' />
-          {/* Child components, such as markers, info windows, etc. */}
-          {/* <></> */}
+          <Marker position={marker1} icon='images/marker_wedding.svg' />
+          <Marker position={marker2} icon='images/marker-party.svg' />
         </GoogleMap>
       </LoadScript>
     </MapContainer>

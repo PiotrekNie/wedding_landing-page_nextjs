@@ -14,6 +14,9 @@ module.exports = {
   sassOptions: {
     includePaths: [path.join(__dirname, "styles")],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config) => {
     config.plugins.push(new StylelintPlugin());
 
