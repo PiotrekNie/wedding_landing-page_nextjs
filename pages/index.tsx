@@ -10,6 +10,7 @@ import GetGallery from "../lib/data";
 import Map from "./components/googleMaps";
 import TimeLine from "./components/timeLine";
 import SectionVideo from "./components/videoPlayer";
+import SectionFooter from "./components/footer";
 
 interface Question {
   id: string;
@@ -209,6 +210,7 @@ export default function Home({ data }: { data: Sections }) {
           </div>
         </Section>
       </main>
+      <SectionFooter />
     </>
   );
 }

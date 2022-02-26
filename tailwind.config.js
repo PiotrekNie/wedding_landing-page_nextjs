@@ -9,6 +9,7 @@ module.exports = {
       sans: ["Lato", "Arial", "sans-serif"],
       serif: ["baskerville-display-pt", "serif"],
       perpetua: ["Perpetua", "baskerville-display-pt", "serif"],
+      balnes: ["Balnes", "Perpetua", "cursive"],
     },
     colors: {
       transparent: "transparent",
