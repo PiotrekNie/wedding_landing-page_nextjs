@@ -35,7 +35,7 @@
       &.obj-3 {
         height: 360px;
 
-        @apply sm:col-span-1 col-span-2 shadow-lg shadow-gray-300;
+        @apply col-span-2 shadow-lg shadow-gray-300;
 
         @media screen and (min-width: $lg) {
           height: 385px;
