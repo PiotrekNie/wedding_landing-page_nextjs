@@ -261,7 +261,7 @@ function Map() {
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          zoom={15}
+          zoom={isDesktop ? 15 : 14}
           options={{ styles }}>
           <Marker position={marker1} icon='images/marker_wedding.svg' />
           <Marker position={marker2} icon='images/marker-party.svg' />

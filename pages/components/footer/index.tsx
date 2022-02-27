@@ -8,10 +8,8 @@ import SCREENS from "../../../components/screens";
 import Ruchenka from "../../../public/images/ruchenka.webp";
 
 const Footer: StyledComponent<"footer", Record<string, unknown>, {}, never> = styled.footer`
-  padding-top: 150px;
-
   ${tw`
-  relative text-center
+  relative text-center pt-20
   `}
 
   @media screen and (min-width: ${SCREENS.md}) {
@@ -22,7 +20,7 @@ const Footer: StyledComponent<"footer", Record<string, unknown>, {}, never> = st
     content: "";
 
     ${tw`
-      w-px lg:h-80 h-36 absolute left-1/2 -translate-x-1/2 bg-black top-0
+      w-px lg:h-80 h-16 absolute left-1/2 -translate-x-1/2 bg-black top-0
     `};
   }
 `;

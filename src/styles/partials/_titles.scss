@@ -1,9 +1,13 @@
 h2 {
-  @include fluid-type(42, 72, 480, 1200);
+  @include fluid-type(33, 72, 480, 1200);
   @apply font-bold leading-none;
+
+  br {
+    @apply hidden sm:block;
+  }
 }
 
 h3 {
   @include fluid-type(18, 30, 480, 1200);
-  @apply font-bold leading-none;
+  @apply font-bold sm:leading-none leading-normal;
 }

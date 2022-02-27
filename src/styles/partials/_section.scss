@@ -1,17 +1,23 @@
 .beforeline {
-  @apply lg:pt-80 pt-48 relative;
+  @apply lg:pt-80 pt-20 relative;
 
   &.show {
     &:before {
       content: "";
 
-      @apply w-px lg:h-80 h-36 absolute left-1/2 -translate-x-1/2 bg-black top-0;
+      @apply w-px lg:h-80 h-16 absolute left-1/2 -translate-x-1/2 bg-black top-0;
     }
   }
 }
 
 .map {
   @apply lg:pt-80 pt-36;
+
+  &.beforeline {
+    &:before {
+      @apply lg:h-80 h-36;
+    }
+  }
 }
 
 .gallery {

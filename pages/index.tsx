@@ -114,7 +114,7 @@ export default function Home({ data }: { data: Sections }) {
       </Head>
 
       <main>
-        <Section className='video show lg:pt-20 pt-16 pb-40' id='video'>
+        <Section className='video show lg:pt-20 pt-16 pb-24' id='video'>
           <div className='flex justify-center'>
             <div className='md:w-8/12 w-full relative text-center'>
               <SectionVideo />
@@ -135,11 +135,11 @@ export default function Home({ data }: { data: Sections }) {
             </div>
           </div>
         </Section>
-        <Section className='container max-w-fhd px-2 md:px-4 gallery show beforeline md:overflow-visible overflow-hidden'>
+        <Section className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12 gallery show beforeline md:overflow-visible overflow-hidden'>
           <div className='flex justify-center'>
             <div className='lg:w-11/12 w-full'>
               <div className='lg:grid grid-cols-10 gap-x-4 '>
-                <div className='lg:col-span-4 lg:pb-0 pb-6'>
+                <div className='lg:col-span-4 lg:pb-0 sm:pb-6 pb-10'>
                   <div className='sticky top-0'>
                     <h2 className='mb-8'>
                       Masz pytanie, <br />
@@ -161,7 +161,7 @@ export default function Home({ data }: { data: Sections }) {
                     </div>
                   </div>
                 </div>
-                <div className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 md:gap-5 gap-y-5 items-end gallery__container'>
+                <div className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-none md:gap-5 gap-y-5 items-end gallery__container'>
                   {galleries.map((galleryItems: Gallery, index: number) => {
                     const id: Gallery = galleryItems;
                     const num: number = index;
