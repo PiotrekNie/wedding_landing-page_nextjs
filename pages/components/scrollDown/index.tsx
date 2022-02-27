@@ -15,7 +15,7 @@ const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
     transform: translate(-50%, 0);
 
     ${tw`
-      absolute left-1/2 md:-bottom-20 -bottom-12 z-0 md:w-9 w-5 h-auto transition-transform duration-300 ease-out
+      absolute left-1/2 md:-bottom-20 -bottom-8 z-0 md:w-9 w-5 h-auto transition-transform duration-300 ease-out
     `}
   }
 
@@ -24,7 +24,7 @@ const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
     transform: translate(-50%, -50%);
 
     ${tw`
-      block md:h-32 md:w-32 h-20 w-20 rounded-full bg-yellow absolute left-1/2 top-1/2 transition-all duration-300 ease-out -z-3
+      block md:h-32 md:w-32 h-20 w-20 rounded-full bg-yellow absolute left-1/2 top-1/2 transition-all duration-300 ease-out -z-3 sm:shadow-none shadow-xl
     `}
   }
 
