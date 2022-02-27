@@ -1,10 +1,10 @@
 import React from "react";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
+import { useMediaQuery } from "react-responsive";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
 import ScrollDown from "../scrollDown";
-import { useMediaQuery } from "react-responsive";
 
 const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styled.video`
   transform: translate(-50%, -50%);
