@@ -4,6 +4,7 @@ import tw from "twin.macro";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
 import ScrollDown from "../scrollDown";
+import { useMediaQuery } from "react-responsive";
 
 const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styled.video`
   transform: translate(-50%, -50%);
@@ -73,11 +74,17 @@ const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled
 `;
 
 export default function SectionVideo() {
+  const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+
   return (
     <>
       <VideoContainer>
         <Video autoPlay playsInline muted loop preload='true' poster='images/video.webp'>
-          <source src='/videos/noWEDDING-Folwark-Ruchenka.mp4' />
+          <source
+            src={
+              isDesktop ? "/videos/noWEDDING-Folwark-Ruchenka.mp4" : "/videos/noWedding-Folwark.mp4"
+            }
+          />
         </Video>
       </VideoContainer>
       <Mask className='svg'>
