@@ -15,7 +15,7 @@ const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
     transform: translate(-50%, 0);
 
     ${tw`
-      absolute left-1/2 md:-bottom-20 -bottom-8 z-0 md:w-9 w-5 h-auto transition-transform duration-300 ease-out
+      absolute left-1/2 md:-bottom-20 -bottom-12 z-0 md:w-9 w-5 h-auto transition-transform duration-300 ease-out
     `}
   }
 
