@@ -3,6 +3,7 @@ import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
+import ScrollDown from "../scrollDown";
 
 const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styled.video`
   transform: translate(-50%, -50%);
@@ -17,7 +18,7 @@ const VideoContainer: StyledComponent<"div", Record<string, unknown>, {}, never>
   padding-top: 41.25%;
 
   ${tw`
-    relative w-full lg:mb-20 mb-12
+    relative w-full lg:mb-8 mb-6
   `}
 `;
 
@@ -32,35 +33,39 @@ const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled
   ${fluidType("480px", SCREENS.xl, "35px", "66px")}
 
   ${tw`
-    font-light table mx-auto relative
+    font-light table mx-auto relative mb-12
   `}
 
   span {
     &:nth-of-type(2) {
       ${tw`
-        px-12 relative
+        md:px-12 px-8 relative
       `}
 
       &:before,
       &:after {
         content: "";
         transform: translateY(-50%);
-        width: 2px;
+        width: 1px;
 
         ${tw`
-          block h-8 bg-black absolute top-1/2
-        `}
+          block md:h-8 h-4 bg-black absolute top-1/2
+          `}
+
+        @media screen and (min-width: ${SCREENS.md}) {
+          width: 2px;
+        }
       }
 
       &:before {
         ${tw`
-          left-5
+          md:left-5 left-4
         `}
       }
 
       &:after {
         ${tw`
-          right-5
+          md:right-5 right-4
         `}
       }
     }
@@ -87,6 +92,7 @@ export default function SectionVideo() {
         <span>07</span>
         <span>22</span>
       </Date>
+      <ScrollDown />
     </>
   );
 }

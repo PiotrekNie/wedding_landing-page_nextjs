@@ -109,13 +109,14 @@ export default function Home({ data }: { data: Sections }) {
       <Head>
         <title>Delfina&amp;Piotek</title>
         <meta name='description' content='Zapraszamy :)' />
+        <meta name='robots' content='noindex' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
       <main>
-        <Section className='video show lg:pt-36 pt-20 pb-40' id='video'>
+        <Section className='video show lg:pt-20 pt-16 pb-40' id='video'>
           <div className='flex justify-center'>
-            <div className='md:w-8/12 w-full relative'>
+            <div className='md:w-8/12 w-full relative text-center'>
               <SectionVideo />
             </div>
           </div>
