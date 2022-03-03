@@ -116,6 +116,10 @@ module.exports = {
           sm: 0,
         },
       },
+      boxShadow: {
+        darken:
+          "0 0 #0000,0 0 #0000,0 20px 25px -5px rgba(0,0,0,0.3),0 10px 10px -5px rgba(0,0,0,0.06)",
+      },
     },
   },
   variants: {

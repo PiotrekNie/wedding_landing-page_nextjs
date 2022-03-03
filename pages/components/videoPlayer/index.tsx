@@ -1,27 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
+import dynamic from "next/dynamic";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import { useMediaQuery } from "react-responsive";
+import ReactPlayer from "react-player/youtube";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
 import ScrollDown from "../scrollDown";
-
-const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styled.video`
-  transform: translate(-50%, -50%);
-
-  ${tw`
-    block mx-auto w-full absolute left-1/2 top-1/2
-  `}
-`;
-
-const VideoContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
-  clip-path: url(#mask);
-  padding-top: 41.25%;
-
-  ${tw`
-    relative w-full lg:mb-8 mb-6
-  `}
-`;
+import COLORS from "../../../components/colors";
 
 const Mask: StyledComponent<"svg", Record<string, unknown>, {}, never> = styled.svg`
   ${tw`
@@ -73,20 +59,109 @@ const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled
   }
 `;
 
+const PlayButton: StyledComponent<"button", Record<string, unknown>, {}, never> = styled.button`
+  transform: translate(-50%, calc(-50% + 30px));
+
+  ${tw`
+    bg-white shadow-darken hover:shadow-sm transition-shadow duration-150 ease-out rounded-full z-10 absolute left-1/2 top-1/2 flex items-center justify-center pl-2 w-20 h-20
+  `}
+
+  &:before {
+    content: "";
+    border-style: solid;
+    border-width: 18px 0 18px 32px;
+    border-color: transparent transparent transparent ${COLORS.yellow};
+
+    ${tw`
+      w-0 h-0
+    `}
+  }
+`;
+
+const Modal: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  ${tw`
+    fixed w-full h-full top-0 left-0 flex items-center justify-center z-999 transition-opacity duration-300 ease-out
+  `}
+`;
+
+const ModalContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  max-width: 59rem;
+
+  ${tw`
+    bg-black mx-auto shadow-darken z-50 overflow-y-auto w-full
+  `}
+`;
+
+const ModalClose: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  ${tw`
+    absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50
+  `}
+
+  svg {
+    ${tw`
+      fill-current text-white
+    `}
+  }
+
+  span {
+    ${tw`
+      text-sm
+    `}
+  }
+`;
+
+const ModalContent: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  padding-top: 56.25%;
+
+  ${tw`
+    relative overflow-hidden
+  `}
+
+  iframe {
+    ${tw`
+      border-none h-full left-0 absolute top-0  w-full
+    `}
+  }
+`;
+
+const ModalOverlay: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  ${tw`
+    absolute w-full h-full bg-gray-900 opacity-50 backdrop-blur-xl
+  `}
+`;
+
+const VideoDesktop: React.ComponentType<{}> = dynamic(() => import("./videoDesktop"), {
+  ssr: false,
+});
+const VideoMobile: React.ComponentType<{}> = dynamic(() => import("./videoMobile"), { ssr: false });
+
 export default function SectionVideo() {
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+  const [currentVideo, setCurrentVideo]: [string, React.Dispatch<React.SetStateAction<string>>] =
+    useState("");
+  const [playing, setPlaying]: [
+    boolean | undefined,
+    React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  ] = useState();
+  const [modal, setModal]: [
+    boolean | undefined,
+    React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  ] = useState();
+  const url: string = `https://www.youtube.com/watch?v=${currentVideo}`;
 
   return (
     <>
-      <VideoContainer>
-        <Video autoPlay playsInline muted loop preload='true' poster='images/video.webp'>
-          <source
-            src={
-              isDesktop ? "/videos/noWEDDING-Folwark-Ruchenka.mp4" : "/videos/noWedding-Folwark.mp4"
-            }
-          />
-        </Video>
-      </VideoContainer>
+      <div className='relative'>
+        {isDesktop && <VideoDesktop />}
+        {!isDesktop && <VideoMobile />}
+        <PlayButton
+          onClick={() => {
+            setCurrentVideo("uHgIJ0lOvPA");
+            setPlaying(true);
+            setModal(true);
+          }}
+        />
+      </div>
       <Mask className='svg'>
         {/* eslint-disable max-len */}
         <clipPath id='mask' clipPathUnits='objectBoundingBox'>
@@ -100,6 +175,39 @@ export default function SectionVideo() {
         <span>22</span>
       </Date>
       <ScrollDown />
+      <Modal className={`modal ${modal ? "show" : "opacity-0 pointer-events-none"}`}>
+        <ModalOverlay
+          onClick={() => {
+            setModal(false);
+            setPlaying(false);
+            setCurrentVideo("");
+          }}
+        />
+        <ModalContainer className='modal-container'>
+          <ModalClose
+            onClick={() => {
+              setModal(false);
+              setPlaying(false);
+              setCurrentVideo("");
+            }}>
+            <svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'>
+              <path d='M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z' />
+            </svg>
+            <span>(Zamknij)</span>
+          </ModalClose>
+          <ModalContent>
+            <ReactPlayer
+              className='react-player'
+              url={url}
+              playing={playing}
+              controls={false}
+              stopOnUnmount
+              width='100%'
+              height='100%'
+            />
+          </ModalContent>
+        </ModalContainer>
+      </Modal>
     </>
   );
 }

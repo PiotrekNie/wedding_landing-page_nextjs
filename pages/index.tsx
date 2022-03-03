@@ -116,12 +116,12 @@ export default function Home({ data }: { data: Sections }) {
       <main>
         <Section className='video show lg:pt-20 pt-16 pb-24' id='video'>
           <div className='flex justify-center'>
-            <div className='md:w-8/12 w-full relative text-center'>
+            <div className='md:w-6/12 w-full relative text-center'>
               <SectionVideo />
             </div>
           </div>
         </Section>
-        <Section className='timeline show beforeline overflow-hidden' id='timeline'>
+        <Section className='timeline show beforeline overflow-hidden pb-12' id='timeline'>
           <div className='flex justify-center'>
             <div className='md:w-8/12 w-full'>
               <TimeLine />
