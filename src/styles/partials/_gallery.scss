@@ -65,7 +65,7 @@
         }
 
         &:after {
-          background: transparent url("../../../public/images/dots.webp") scroll repeat left top;
+          background: transparent url("../../../public/images/dots.webp") scroll repeat 4px top;
 
           @apply -z-3 -right-9 -bottom-9;
         }

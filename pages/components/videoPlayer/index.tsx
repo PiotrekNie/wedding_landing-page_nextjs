@@ -17,7 +17,7 @@ const Mask: StyledComponent<"svg", Record<string, unknown>, {}, never> = styled.
 `;
 
 const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
-  ${fluidType("480px", SCREENS.xl, "35px", "66px")}
+  ${fluidType("480px", SCREENS.xl, "28px", "40px")}
 
   ${tw`
     font-light table mx-auto relative mb-12
@@ -26,7 +26,7 @@ const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled
   span {
     &:nth-of-type(2) {
       ${tw`
-        md:px-12 px-8 relative
+        px-8 relative
       `}
 
       &:before,
@@ -36,45 +36,45 @@ const Date: StyledComponent<"span", Record<string, unknown>, {}, never> = styled
         width: 1px;
 
         ${tw`
-          block md:h-8 h-4 bg-black absolute top-1/2
+          block md:h-6 h-4 bg-black absolute top-1/2
           `}
-
-        @media screen and (min-width: ${SCREENS.md}) {
-          width: 2px;
-        }
       }
 
       &:before {
-        ${tw`
-          md:left-5 left-4
-        `}
+        left: 14px;
       }
 
       &:after {
-        ${tw`
-          md:right-5 right-4
-        `}
+        right: 14px;
       }
     }
   }
 `;
 
 const PlayButton: StyledComponent<"button", Record<string, unknown>, {}, never> = styled.button`
-  transform: translate(-50%, calc(-50% + 30px));
+  transform: translate(-50%, calc(-50% + 10px));
 
   ${tw`
-    bg-white shadow-darken hover:shadow-sm transition-shadow duration-150 ease-out rounded-full z-10 absolute left-1/2 top-1/2 flex items-center justify-center pl-2 w-20 h-20
+    bg-white shadow-darken hover:shadow-sm transition-shadow duration-150 ease-out rounded-full z-10 absolute left-1/2 top-1/2 flex items-center justify-center pl-1 md:w-16 md:h-16 w-10 h-10
   `}
+
+  @media screen and (min-width: ${SCREENS.md}) {
+    transform: translate(-50%, calc(-50% + 20px));
+  }
 
   &:before {
     content: "";
     border-style: solid;
-    border-width: 18px 0 18px 32px;
     border-color: transparent transparent transparent ${COLORS.yellow};
+    border-width: 10px 0 10px 14px;
 
     ${tw`
       w-0 h-0
     `}
+
+    @media (min-width: ${SCREENS.md}) {
+      border-width: 15px 0 15px 22px;
+    }
   }
 `;
 

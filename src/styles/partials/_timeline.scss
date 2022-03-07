@@ -4,7 +4,7 @@
 
     &:after {
       content: "";
-      background: transparent url("../../../public/images/dots.webp") scroll repeat left top;
+      background: transparent url("../../../public/images/dots.webp") scroll repeat left -5px;
 
       @apply w-full h-full absolute block -z-3 -right-10 -bottom-10;
     }
