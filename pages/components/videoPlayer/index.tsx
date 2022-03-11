@@ -55,11 +55,15 @@ const PlayButton: StyledComponent<"button", Record<string, unknown>, {}, never> 
   transform: translate(-50%, calc(-50% + 10px));
 
   ${tw`
-    bg-white shadow-darken hover:shadow-sm transition-shadow duration-150 ease-out rounded-full z-10 absolute left-1/2 top-1/2 flex items-center justify-center pl-1 md:w-16 md:h-16 w-10 h-10
+    bg-white shadow-darken hover:shadow-sm transition-shadow duration-150 ease-out rounded-full z-10 absolute left-1/2 top-1/2 flex items-center justify-center pl-1 xxl:w-20 md:w-16 xxl:h-20 md:h-16 w-10 h-10
   `}
 
   @media screen and (min-width: ${SCREENS.md}) {
     transform: translate(-50%, calc(-50% + 20px));
+  }
+
+  @media screen and (min-width: ${SCREENS.xxl}) {
+    transform: translate(-50%, calc(-50% + 40px));
   }
 
   &:before {

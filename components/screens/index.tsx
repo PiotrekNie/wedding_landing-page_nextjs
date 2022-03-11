@@ -3,6 +3,7 @@ const SCREENS: {
   md: string;
   lg: string;
   xl: string;
+  xxl: string;
 } = {
   sm: "640px",
   // => @media (min-width: 640px) { ... }
@@ -14,6 +15,9 @@ const SCREENS: {
   // => @media (min-width: 992px) { ... }
 
   xl: "1200px",
+  // => @media (min-width: 1200px) { ... }
+
+  xxl: "1530px",
   // => @media (min-width: 1200px) { ... }
 };
 
