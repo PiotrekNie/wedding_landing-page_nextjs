@@ -1,4 +1,5 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React from "react";
+import dynamic from "next/dynamic";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { RichTextContent } from "@graphcms/rich-text-types";
 import { GraphQLClient } from "graphql-request";
@@ -6,11 +7,13 @@ import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 // Partials
 import Head from "next/head";
+import { useMediaQuery } from "react-responsive";
 import GetGallery from "../lib/data";
 import Map from "./components/googleMaps";
 import TimeLine from "./components/timeLine";
 import SectionVideo from "./components/videoPlayer";
 import SectionFooter from "./components/footer";
+import SCREENS from "../components/screens/index";
 
 interface Question {
   id: string;
@@ -22,7 +25,7 @@ interface Question {
   };
 }
 
-interface Gallery {
+export interface Gallery {
   id: string;
   images: {
     id: string;
@@ -31,16 +34,28 @@ interface Gallery {
   }[];
 }
 
-interface Sections {
+export interface Sections {
   qas: Question[];
   galleries: Gallery[];
 }
 
-interface Image {
+export interface Image {
   id: string;
   url: string;
   fileName: string;
 }
+
+// Dynamic imports
+const GalleryDesktop: React.ComponentType<{ data: Sections }> = dynamic(
+  () => import("./components/galleryDesktop"),
+  { ssr: false },
+);
+const GalleryMobile: React.ComponentType<{ data: Sections }> = dynamic(
+  () => import("./components/galleryMobile"),
+  {
+    ssr: false,
+  },
+);
 
 const Section: StyledComponent<"section", Record<string, unknown>, {}, never> = styled.section`
   ${tw`
@@ -63,46 +78,8 @@ export const getStaticProps: () => Promise<{
 };
 
 export default function Home({ data }: { data: Sections }) {
-  const [gallery, setGallery]: [number, Dispatch<SetStateAction<number>>] = useState<number>(0);
-
-  const { qas, galleries }: Sections = data;
-
-  useEffect(() => {
-    const interval: NodeJS.Timer = setInterval(() => {
-      const rand: number = Math.floor(Math.random() * (galleries.length - 1 - 0 + 1)) + 0;
-
-      setGallery(rand);
-
-      return rand;
-    }, 2000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const elements: Element[] = Array.from(document.querySelectorAll(".gallery__container--col"));
-
-    const removeHideAll: (objects: HTMLCollection) => void = (objects: HTMLCollection) => {
-      Array.from(objects).forEach((key: Element) => key.classList.remove("show"));
-    };
-
-    (() =>
-      new Promise<HTMLCollection>(
-        (resolve: (value: HTMLCollection | PromiseLike<HTMLCollection>) => void) => {
-          resolve(elements[gallery].children);
-        },
-      )
-        .then((children: HTMLCollection) => {
-          removeHideAll(children);
-
-          return children;
-        })
-        .then((children: HTMLCollection) => {
-          const rand: number = Math.floor(Math.random() * (children.length - 1 - 0 + 1)) + 0;
-
-          children[rand].classList.add("show");
-        }))();
-  });
+  const { qas }: Sections = data;
+  const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
 
   return (
     <>
@@ -143,7 +120,7 @@ export default function Home({ data }: { data: Sections }) {
                   <div className='sticky top-0'>
                     <h2 className='mb-8'>
                       Masz pytanie, <br />
-                      zadzwoń :)
+                      zadzwoń :&#41;
                     </h2>
                     <div>
                       <p>
@@ -161,28 +138,9 @@ export default function Home({ data }: { data: Sections }) {
                     </div>
                   </div>
                 </div>
-                <div className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-none md:gap-5 gap-y-5 items-end gallery__container'>
-                  {galleries.map((galleryItems: Gallery, index: number) => {
-                    const id: Gallery = galleryItems;
-                    const num: number = index;
-                    return (
-                      <div key={num} className={`gallery__container--col obj-${index}`}>
-                        {id.images.map((img: Image, keyIndex: number) => {
-                          const item: Image = img;
-                          const i: number = keyIndex;
-                          return (
-                            <div
-                              key={i}
-                              className={`gallery__container--img ${i === 0 ? "show" : ""}`}>
-                              <img src={item.url} alt={item.fileName} />
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
+                {isDesktop && <GalleryDesktop data={data} />}
               </div>
+              {!isDesktop && <GalleryMobile data={data} />}
             </div>
           </div>
         </Section>
