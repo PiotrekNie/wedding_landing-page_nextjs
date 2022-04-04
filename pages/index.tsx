@@ -10,7 +10,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Partials
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
-import { SwiperModule } from "swiper/types";
 import GetGallery from "../lib/data";
 import Map from "./components/googleMaps";
 import TimeLine from "./components/timeLine";
@@ -86,7 +85,6 @@ export const getStaticProps: () => Promise<{
 };
 
 export default function Home({ data }: { data: Sections }) {
-  let swiperModules: SwiperModule[] = [];
   const { qas, galleries }: Sections = data;
   const [gallery, setGallery]: [number, Dispatch<SetStateAction<number>>] = useState<number>(0);
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
@@ -137,10 +135,6 @@ export default function Home({ data }: { data: Sections }) {
 
           children[rand].classList.add("show");
         }))();
-
-    if (desktop) return;
-
-    swiperModules = [Virtual, EffectFade];
   }, []);
 
   galleries.forEach((items: Gallery) => {
@@ -234,9 +228,9 @@ export default function Home({ data }: { data: Sections }) {
                   </section>
                 )}
               </div>
-              {!desktop && (
+              {galleryArray.length > 0 && !desktop ? (
                 <Swiper
-                  modules={swiperModules}
+                  modules={[Virtual, EffectFade]}
                   spaceBetween={50}
                   effect='fade'
                   slidesPerView={1}
@@ -253,6 +247,10 @@ export default function Home({ data }: { data: Sections }) {
                       </SwiperSlide>
                     );
                   })}
+                </Swiper>
+              ) : (
+                <Swiper>
+                  <SwiperSlide />
                 </Swiper>
               )}
             </div>
