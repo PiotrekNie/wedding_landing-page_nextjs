@@ -111,9 +111,9 @@ export default function Home({ data }: { data: Sections }) {
   }, []);
 
   useEffect(() => {
-    if (!desktop) return;
-
     const elements: Element[] = Array.from(document.querySelectorAll(".gallery__container--col"));
+
+    if (elements.length === 0) return;
 
     const removeHideAll: (objects: HTMLCollection) => void = (objects: HTMLCollection) => {
       Array.from(objects).forEach((key: Element) => key.classList.remove("show"));
@@ -135,7 +135,7 @@ export default function Home({ data }: { data: Sections }) {
 
           children[rand].classList.add("show");
         }))();
-  }, []);
+  });
 
   galleries.forEach((items: Gallery) => {
     const id: Gallery = items;
