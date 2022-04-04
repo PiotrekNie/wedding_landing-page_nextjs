@@ -1,19 +1,27 @@
-import React from "react";
-import dynamic from "next/dynamic";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { RichTextContent } from "@graphcms/rich-text-types";
 import { GraphQLClient } from "graphql-request";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
+import SwiperCore, { Virtual, EffectFade, Autoplay } from "swiper";
+/* eslint-disable import/no-unresolved */
+import { Swiper, SwiperSlide } from "swiper/react";
 // Partials
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
+import { SwiperModule } from "swiper/types";
 import GetGallery from "../lib/data";
 import Map from "./components/googleMaps";
 import TimeLine from "./components/timeLine";
 import SectionVideo from "./components/videoPlayer";
 import SectionFooter from "./components/footer";
 import SCREENS from "../components/screens/index";
+
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/virtual";
+import "swiper/css/autoplay";
 
 interface Question {
   id: string;
@@ -45,17 +53,17 @@ export interface Image {
   fileName: string;
 }
 
-// Dynamic imports
-const GalleryDesktop: React.ComponentType<{ data: Sections }> = dynamic(
-  () => import("./components/galleryDesktop"),
-  { ssr: false },
-);
-const GalleryMobile: React.ComponentType<{ data: Sections }> = dynamic(
-  () => import("./components/galleryMobile"),
-  {
-    ssr: false,
-  },
-);
+const SwiperItem: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  ${tw`
+    h-96 w-full relative
+  `}
+
+  img {
+    ${tw`
+      w-full h-full object-cover
+    `}
+  }
+`;
 
 const Section: StyledComponent<"section", Record<string, unknown>, {}, never> = styled.section`
   ${tw`
@@ -78,8 +86,72 @@ export const getStaticProps: () => Promise<{
 };
 
 export default function Home({ data }: { data: Sections }) {
-  const { qas }: Sections = data;
+  let swiperModules: SwiperModule[] = [];
+  const { qas, galleries }: Sections = data;
+  const [gallery, setGallery]: [number, Dispatch<SetStateAction<number>>] = useState<number>(0);
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+  const [desktop, setDesktop]: [
+    boolean | undefined,
+    Dispatch<SetStateAction<boolean | undefined>>,
+  ] = useState();
+  const galleryArray: Image[] = [];
+
+  useEffect(() => {
+    setDesktop(isDesktop);
+  }, []);
+
+  useEffect(() => {
+    const interval: NodeJS.Timer = setInterval(() => {
+      const rand: number = Math.floor(Math.random() * (galleries.length - 1 - 0 + 1)) + 0;
+
+      setGallery(rand);
+
+      return rand;
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (!desktop) return;
+
+    const elements: Element[] = Array.from(document.querySelectorAll(".gallery__container--col"));
+
+    const removeHideAll: (objects: HTMLCollection) => void = (objects: HTMLCollection) => {
+      Array.from(objects).forEach((key: Element) => key.classList.remove("show"));
+    };
+
+    (() =>
+      new Promise<HTMLCollection>(
+        (resolve: (value: HTMLCollection | PromiseLike<HTMLCollection>) => void) => {
+          resolve(elements[gallery].children);
+        },
+      )
+        .then((children: HTMLCollection) => {
+          removeHideAll(children);
+
+          return children;
+        })
+        .then((children: HTMLCollection) => {
+          const rand: number = Math.floor(Math.random() * (children.length - 1 - 0 + 1)) + 0;
+
+          children[rand].classList.add("show");
+        }))();
+
+    if (desktop) return;
+
+    swiperModules = [Virtual, EffectFade];
+  }, []);
+
+  galleries.forEach((items: Gallery) => {
+    const id: Gallery = items;
+
+    id.images.forEach((img: Image) => {
+      galleryArray.push(img);
+    });
+  });
+
+  SwiperCore.use([Autoplay]);
 
   return (
     <>
@@ -138,9 +210,51 @@ export default function Home({ data }: { data: Sections }) {
                     </div>
                   </div>
                 </div>
-                {isDesktop && <GalleryDesktop data={data} />}
+                {desktop && (
+                  <section className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-none md:gap-5 gap-y-5 items-end gallery__container'>
+                    {galleries.map((galleryItems: Gallery, index: number) => {
+                      const id: Gallery = galleryItems;
+                      const num: number = index;
+                      return (
+                        <div key={num} className={`gallery__container--col obj-${index}`}>
+                          {id.images.map((img: Image, keyIndex: number) => {
+                            const item: Image = img;
+                            const i: number = keyIndex;
+                            return (
+                              <div
+                                key={i}
+                                className={`gallery__container--img ${i === 0 ? "show" : ""}`}>
+                                <img src={item.url} alt={item.fileName} />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                  </section>
+                )}
               </div>
-              {!isDesktop && <GalleryMobile data={data} />}
+              {!desktop && (
+                <Swiper
+                  modules={swiperModules}
+                  spaceBetween={50}
+                  effect='fade'
+                  slidesPerView={1}
+                  autoplay={{ delay: 2000 }}
+                  virtual>
+                  {galleryArray.map((img: Image, index: number) => {
+                    const item: Image = img;
+                    const i: number = index;
+                    return (
+                      <SwiperSlide key={item.id} virtualIndex={i}>
+                        <SwiperItem>
+                          <img src={item.url} alt={item.fileName} />
+                        </SwiperItem>
+                      </SwiperSlide>
+                    );
+                  })}
+                </Swiper>
+              )}
             </div>
           </div>
         </Section>
