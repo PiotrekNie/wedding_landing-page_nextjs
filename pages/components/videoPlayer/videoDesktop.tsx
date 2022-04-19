@@ -12,7 +12,7 @@ const Video: StyledComponent<"video", Record<string, unknown>, {}, never> = styl
 
 const VideoContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   clip-path: url(#mask);
-  padding-top: 41.25%;
+  padding-top: 38.25%;
 
   ${tw`
     relative w-full lg:mb-8 mb-6

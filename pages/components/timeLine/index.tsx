@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Button from "../button";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
@@ -10,10 +12,22 @@ import SCREENS from "../../../components/screens";
 import Church from "../../../public/images/Ruchna-1.webp";
 import Ruchenka from "../../../public/images/Ruchna-2.webp";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const ImageContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
     relative shadow-xl block md:h-auto h-80 w-full
   `}
+
+  > div {
+    position: unset !important;
+  }
+
+  img {
+    ${tw`
+      object-cover w-full relative
+    `}
+  }
 
   span {
     ${tw`
@@ -80,9 +94,36 @@ const Paragraph: StyledComponent<"p", Record<string, unknown>, {}, never> = styl
 `;
 
 function TimeLine() {
+  const wrapper: React.MutableRefObject<HTMLElement[]> = useRef<HTMLElement[]>([]);
+
+  useEffect(() => {
+    wrapper.current.forEach((item: HTMLElement) => {
+      gsap.fromTo(
+        item.children,
+        { y: "+=75", opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: item,
+            start: "top center",
+          },
+        },
+      );
+    });
+  }, []);
+
+  const addToRefs: (item: HTMLDivElement) => void = (item: HTMLDivElement) => {
+    if (item) {
+      wrapper.current.push(item);
+    }
+  };
+
   return (
     <>
-      <TimeLineItem className='md:grid flex flex-col-reverse'>
+      <TimeLineItem ref={addToRefs} className='md:grid flex flex-col-reverse scroll-trigger'>
         <ImageContainer className='dots md:col-span-3 sm:col-span-6'>
           <Image
             src={Church}
@@ -100,8 +141,8 @@ function TimeLine() {
           <Button text='Sprawdź  na mapie' url='map' />
         </TextContainer>
       </TimeLineItem>
-      <TimeLineItem className='pt-14'>
-        <TextContainer className='md:col-span-4 md:text-right text-center'>
+      <TimeLineItem ref={addToRefs} className='pt-14'>
+        <TextContainer className='md:col-span-4 md:text-right text-center scroll-trigger'>
           <Hour direction='right'>
             18<sup>00</sup>
           </Hour>

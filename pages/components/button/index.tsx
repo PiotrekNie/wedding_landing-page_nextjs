@@ -1,6 +1,14 @@
-import React, { useState, useEffect, Dispatch, SetStateAction, MouseEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  MouseEvent,
+  useContext,
+} from "react";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
+import { MouseContext } from "../../../context/mouse-context";
 
 interface ButtonTypes {
   text: string;
@@ -48,6 +56,9 @@ const ButtonItem: StyledComponent<"a", Record<string, unknown>, {}, never> = sty
 `;
 
 export default function Button(props: ButtonTypes) {
+  const {
+    cursorChangeHandler,
+  }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
   const { text, url }: ButtonTypes = props;
   const [anchorTarget, setAnchorTarget]: [
     Element | unknown,
@@ -69,7 +80,11 @@ export default function Button(props: ButtonTypes) {
   };
 
   return (
-    <ButtonItem href={`#${url}`} onClick={(ev: MouseEvent<HTMLAnchorElement>) => handleClick(ev)}>
+    <ButtonItem
+      href={`#${url}`}
+      onClick={(ev: MouseEvent<HTMLAnchorElement>) => handleClick(ev)}
+      onMouseEnter={() => cursorChangeHandler("hovered")}
+      onMouseLeave={() => cursorChangeHandler("")}>
       {text}
     </ButtonItem>
   );

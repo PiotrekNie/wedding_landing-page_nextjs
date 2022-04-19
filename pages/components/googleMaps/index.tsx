@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import styled, { StyledComponent } from "styled-components";
 import { useMediaQuery } from "react-responsive";
 import tw from "twin.macro";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import SCREENS from "../../../components/screens";
 
 /**
  * Images
  */
-// import Icon from "images/marker_wedding.svg";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const MapContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
-    shadow-xl
+    shadow-darken
   `}
 `;
 
@@ -248,7 +251,25 @@ const styles: google.maps.MapTypeStyle[] | null | undefined = [
 // };
 
 function Map() {
+  const mapWrapper: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+
+  useEffect(() => {
+    // gsap
+    const node: HTMLElement = mapWrapper.current as HTMLElement;
+
+    gsap.fromTo(
+      node,
+      { y: "+=75", opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "Power2.easeOut",
+        scrollTrigger: { trigger: node, start: "top center" },
+      },
+    );
+  }, []);
 
   const containerStyle: { width: string; height: string } = {
     width: "100%",
@@ -256,7 +277,7 @@ function Map() {
   };
 
   return (
-    <MapContainer>
+    <MapContainer ref={mapWrapper}>
       <LoadScript googleMapsApiKey='AIzaSyCrvvUQqeJYgEv_lpakC_PAZPKCjbAT57Y'>
         <GoogleMap
           mapContainerStyle={containerStyle}

@@ -1,8 +1,16 @@
-import React, { useState, useEffect, Dispatch, SetStateAction, MouseEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+  MouseEvent,
+  useContext,
+} from "react";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import fluidType from "../fluid-typography";
 import SCREENS from "../../../components/screens";
+import { MouseContext } from "../../../context/mouse-context";
 
 const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
   ${fluidType("480px", SCREENS.xl, "18px", "30px")}
@@ -31,7 +39,7 @@ const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
   &:hover {
     &:before {
       ${tw`
-        shadow-xl
+        shadow-darken
       `}
     }
 
@@ -42,6 +50,9 @@ const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
 `;
 
 export default function ScrollDown() {
+  const {
+    cursorChangeHandler,
+  }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
   const [anchorTarget, setAnchorTarget]: [
     Element | unknown,
     Dispatch<SetStateAction<Element | unknown>>,
@@ -62,7 +73,11 @@ export default function ScrollDown() {
   };
 
   return (
-    <CTA href='#timeline' onClick={(ev: MouseEvent<HTMLAnchorElement>) => handleClick(ev)}>
+    <CTA
+      href='#timeline'
+      onClick={(ev: MouseEvent<HTMLAnchorElement>) => handleClick(ev)}
+      onMouseEnter={() => cursorChangeHandler("hovered")}
+      onMouseLeave={() => cursorChangeHandler("")}>
       Zapraszamy <img src='/images/arrow.svg' alt='Zjedź niżej' />
     </CTA>
   );

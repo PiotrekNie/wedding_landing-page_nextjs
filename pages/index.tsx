@@ -1,26 +1,36 @@
-import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import React, { useState, useRef, useEffect, Dispatch, SetStateAction, useContext } from "react";
 import { RichText } from "@graphcms/rich-text-react-renderer";
 import { RichTextContent } from "@graphcms/rich-text-types";
 import { GraphQLClient } from "graphql-request";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
-import SwiperCore, { Virtual, EffectFade, Autoplay } from "swiper";
+import SwiperCore, { Virtual, Autoplay, Navigation } from "swiper";
 /* eslint-disable import/no-unresolved */
 import { Swiper, SwiperSlide } from "swiper/react";
 // Partials
 import Head from "next/head";
 import { useMediaQuery } from "react-responsive";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import GetGallery from "../lib/data";
 import Map from "./components/googleMaps";
 import TimeLine from "./components/timeLine";
 import SectionVideo from "./components/videoPlayer";
 import SectionFooter from "./components/footer";
+import Cursor from "../components/coursor/index";
 import SCREENS from "../components/screens/index";
+import { MouseContext } from "../context/mouse-context";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/virtual";
 import "swiper/css/autoplay";
+import "swiper/css/navigation";
+
+// Images
+SwiperCore.use([Autoplay]);
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface Question {
   id: string;
@@ -54,7 +64,7 @@ export interface Image {
 
 const SwiperItem: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
   ${tw`
-    h-96 w-full relative
+    w-full relative
   `}
 
   img {
@@ -68,6 +78,14 @@ const Section: StyledComponent<"section", Record<string, unknown>, {}, never> = 
   ${tw`
     container max-w-fhd px-2 md:px-4
   `}
+`;
+
+const Subtitle: StyledComponent<"h2", Record<string, unknown>, {}, never> = styled.h2`
+  span {
+    ${tw`
+      block
+    `}
+  }
 `;
 
 export const getStaticProps: () => Promise<{
@@ -85,6 +103,17 @@ export const getStaticProps: () => Promise<{
 };
 
 export default function Home({ data }: { data: Sections }) {
+  const {
+    cursorChangeHandler,
+  }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
+  const wrapper: React.MutableRefObject<HTMLHeadingElement[]> = useRef<HTMLHeadingElement[]>([]);
+  const subtitleWrapper: React.MutableRefObject<HTMLHeadingElement[]> = useRef<
+    HTMLHeadingElement[]
+  >([]);
+  const sectionWrapper: React.MutableRefObject<HTMLHeadingElement[]> = useRef<HTMLHeadingElement[]>(
+    [],
+  );
+  const faqWrapper: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const { qas, galleries }: Sections = data;
   const [gallery, setGallery]: [number, Dispatch<SetStateAction<number>>] = useState<number>(0);
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
@@ -95,6 +124,86 @@ export default function Home({ data }: { data: Sections }) {
   const galleryArray: Image[] = [];
 
   useEffect(() => {
+    // GSAP
+    const node: HTMLDivElement = faqWrapper.current as HTMLDivElement;
+    const sectionArray: HTMLHeadingElement[] = sectionWrapper.current as HTMLHeadingElement[];
+    const wrapperCurrent: HTMLHeadingElement[] = wrapper.current as HTMLHeadingElement[];
+
+    sectionArray.forEach((section: HTMLElement) => {
+      gsap.fromTo(
+        section,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 60%",
+            onEnter: () => {
+              section.classList.add("show");
+            },
+          },
+        },
+      );
+    });
+
+    wrapperCurrent.forEach((element: HTMLElement) => {
+      gsap.fromTo(
+        element?.children,
+        { y: "+=75", opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: element,
+            start: "top center",
+          },
+        },
+      );
+    });
+
+    gsap.fromTo(
+      node?.children,
+      { y: "+=75", opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.5,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: node,
+          start: "top center",
+        },
+      },
+    );
+
+    const subtitleArray: HTMLHeadingElement[] = subtitleWrapper.current as HTMLHeadingElement[];
+
+    subtitleArray.forEach((item: HTMLElement) => {
+      const text: Element[] = Array.from(item.children);
+
+      text.forEach((child: Element, index: number) => {
+        const spanElement: HTMLElement = child.firstElementChild as HTMLElement;
+
+        gsap.fromTo(
+          spanElement,
+          { y: "+=75", opacity: 0, ease: "power3.easeOut" },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.5,
+            delay: index * 0.15,
+            scrollTrigger: {
+              trigger: text,
+              start: "top center",
+            },
+          },
+        );
+      });
+    });
+
     setDesktop(isDesktop);
   }, []);
 
@@ -145,10 +254,25 @@ export default function Home({ data }: { data: Sections }) {
     });
   });
 
-  SwiperCore.use([Autoplay]);
+  const addToRefsArr: (item: HTMLHeadingElement) => void = (item: HTMLHeadingElement) => {
+    if (item) {
+      wrapper.current.push(item);
+    }
+  };
+
+  const addToRefs: (item: HTMLHeadingElement) => void = (item: HTMLHeadingElement) => {
+    if (item) {
+      subtitleWrapper.current.push(item);
+    }
+  };
+
+  const sectionsToRefs: (section: HTMLHeadingElement) => void = (section: HTMLHeadingElement) => {
+    if (section) sectionWrapper.current.push(section);
+  };
 
   return (
     <>
+      {desktop && <Cursor />}
       <Head>
         <title>Delfina&amp;Piotek</title>
         <meta name='description' content='Zapraszamy :)' />
@@ -157,47 +281,64 @@ export default function Home({ data }: { data: Sections }) {
       </Head>
 
       <main>
-        <Section className='video show lg:pt-20 pt-16 pb-24' id='video'>
-          <div className='flex justify-center'>
+        <Section className='video xxl:pt-0 xl:pt-0 pt-16 pb-24' id='video'>
+          <div className='flex justify-center h-screen items-center'>
             <div className='md:w-8/12 w-full relative text-center'>
               <SectionVideo />
             </div>
           </div>
         </Section>
-        <Section className='timeline show beforeline overflow-hidden pb-12' id='timeline'>
+        <Section
+          className='timeline beforeline md:overflow-visible overflow-hidden pb-12'
+          id='timeline'
+          ref={sectionsToRefs}>
           <div className='flex justify-center'>
             <div className='md:w-8/12 w-full'>
               <TimeLine />
             </div>
           </div>
         </Section>
-        <Section className='map show beforeline' id='map'>
+        <Section className='map beforeline' ref={sectionsToRefs} id='map'>
           <div className='flex justify-center'>
-            <div className='lg:w-8/12 w-full md:p-5 p-3 border-2 border-black'>
+            <div className='lg:w-8/12 w-full md:p-5 p-3 border-2 border-black opacity-0 transition-opacity duration-300 ease-linear delay-500 map__border'>
               <Map />
             </div>
           </div>
         </Section>
-        <Section className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12 gallery show beforeline md:overflow-visible overflow-hidden'>
+        <Section
+          className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12 gallery beforeline md:overflow-visible overflow-hidden'
+          ref={sectionsToRefs}>
           <div className='flex justify-center'>
             <div className='lg:w-11/12 w-full'>
               <div className='lg:grid grid-cols-10 gap-x-4 '>
                 <div className='lg:col-span-4 lg:pb-0 sm:pb-6 pb-10'>
                   <div className='sticky top-0'>
-                    <h2 className='mb-8'>
-                      Masz pytanie, <br />
-                      zadzwoń :&#41;
-                    </h2>
-                    <div>
+                    <Subtitle ref={addToRefs} className='mb-8'>
+                      <span className='overflow-hidden'>
+                        <span>Masz pytanie,</span>
+                      </span>
+                      <span className='overflow-hidden'>
+                        <span>zadzwoń :</span>
+                      </span>
+                    </Subtitle>
+                    <div ref={addToRefsArr}>
                       <p>
                         Delfina{" "}
-                        <a href='tel:+48508093384' className='btn ml-4'>
+                        <a
+                          href='tel:+48508093384'
+                          className='btn ml-4'
+                          onMouseEnter={() => cursorChangeHandler("hovered")}
+                          onMouseLeave={() => cursorChangeHandler("")}>
                           +48 508 093 384
                         </a>
                       </p>
                       <p>
                         Piotrek{" "}
-                        <a href='tel:+48509235952' className='btn ml-4'>
+                        <a
+                          href='tel:+48509235952'
+                          className='btn ml-4'
+                          onMouseEnter={() => cursorChangeHandler("hovered")}
+                          onMouseLeave={() => cursorChangeHandler("")}>
                           +48 509 235 952
                         </a>
                       </p>
@@ -205,7 +346,7 @@ export default function Home({ data }: { data: Sections }) {
                   </div>
                 </div>
                 {desktop && (
-                  <section className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-none md:gap-5 gap-y-5 items-end gallery__container'>
+                  <div className='lg:col-span-6 grid grid-flow-row-dense lg:grid-cols-3 sm:grid-cols-2 grid-cols-none md:gap-5 gap-y-5 items-end gallery__container'>
                     {galleries.map((galleryItems: Gallery, index: number) => {
                       const id: Gallery = galleryItems;
                       const num: number = index;
@@ -225,16 +366,17 @@ export default function Home({ data }: { data: Sections }) {
                         </div>
                       );
                     })}
-                  </section>
+                  </div>
                 )}
               </div>
               {galleryArray.length > 0 && !desktop ? (
                 <Swiper
-                  modules={[Virtual, EffectFade]}
-                  spaceBetween={50}
-                  effect='fade'
+                  modules={[Virtual, Navigation]}
+                  spaceBetween={0}
+                  autoHeight
                   slidesPerView={1}
-                  autoplay={{ delay: 2000 }}
+                  navigation
+                  autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }}
                   virtual>
                   {galleryArray.map((img: Image, index: number) => {
                     const item: Image = img;
@@ -256,18 +398,24 @@ export default function Home({ data }: { data: Sections }) {
             </div>
           </div>
         </Section>
-        <Section className='faq show beforeline'>
-          <div className='flex justify-center'>
+        <Section className='faq beforeline' ref={sectionsToRefs}>
+          <div className='flex justify-center pt-10'>
             <div className='lg:w-11/12 w-full'>
               <div className='md:grid grid-cols-10 gap-x-4'>
                 <div className='md:col-span-4 md:mb-0 mb-10'>
-                  <h2 className='sticky top-0'>
-                    Wszystko <br />
-                    co musisz <br />
-                    wiedzieć...
-                  </h2>
+                  <Subtitle ref={addToRefs} className='sticky top-0'>
+                    <span className='overflow-hidden'>
+                      <span>Wszystko</span>
+                    </span>
+                    <span className='overflow-hidden'>
+                      <span>co musisz</span>
+                    </span>
+                    <span className='overflow-hidden'>
+                      <span>wiedzieć...</span>
+                    </span>
+                  </Subtitle>
                 </div>
-                <div className='md:col-span-6 grid lg:md:grid-cols-2 gap-x-10'>
+                <div className='md:col-span-6 grid lg:md:grid-cols-2 gap-x-10' ref={faqWrapper}>
                   {qas?.map((q: Question) => (
                     <div key={q.id} className='md:mb-20 mb-12'>
                       <h3 className='mb-8'>{q.question}</h3>

@@ -4,13 +4,13 @@
       @apply relative;
 
       &.obj-0 {
-        @apply h-80 sm:shadow-xl shadow-lg shadow-gray-300 sm:col-span-1 col-span-2;
+        @apply h-80 sm:shadow-darken shadow-lg shadow-gray-300 sm:col-span-1 col-span-2;
       }
 
       &.obj-1 {
         height: 360px;
 
-        @apply col-span-2 shadow-lg shadow-gray-300;
+        @apply col-span-2 sm:shadow-none shadow-lg shadow-gray-300;
 
         @media screen and (min-width: $lg) {
           height: 420px;
@@ -45,7 +45,7 @@
       }
 
       &.obj-4 {
-        @apply lg:h-80 h-90 sm:shadow-xl shadow-lg shadow-gray-300 relative z-10 sm:col-span-1 col-span-2;
+        @apply lg:h-80 h-90 sm:shadow-darken shadow-lg shadow-gray-300 relative z-10 sm:col-span-1 col-span-2;
 
         @media screen and (min-width: $lg) {
           margin-bottom: -120px;

@@ -10,7 +10,9 @@
 
 // Components
 @import "components/fonts";
+@import "components/base";
 @import "components/body";
+@import "components/keyframes";
 
 // Partials
 @import "partials/titles";
@@ -19,3 +21,4 @@
 @import "partials/timeline";
 @import "partials/faq";
 @import "partials/button";
+@import "partials/cursor";

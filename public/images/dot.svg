@@ -1,0 +1,3 @@
+<svg className='cursor' width='25' height='25' viewBox='0 0 25 25'>
+        <circle className='cursor__inner' cx='12.5' cy='12.5' r='6.25' />
+      </svg>
