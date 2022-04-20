@@ -281,7 +281,7 @@ export default function Home({ data }: { data: Sections }) {
       </Head>
 
       <main>
-        <Section className='video xxl:pt-0 xl:pt-0 pt-16 pb-24' id='video'>
+        <Section className='video xxl:pt-0 xl:pt-0 pt-16 pb-24 h-screen' id='video'>
           <div className='flex justify-center h-screen items-center'>
             <div className='md:w-8/12 w-full relative text-center'>
               <SectionVideo />
