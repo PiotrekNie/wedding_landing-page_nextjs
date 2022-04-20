@@ -5,10 +5,10 @@ import tw from "twin.macro";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import fluidType from "../fluid-typography";
-import SCREENS from "../../../components/screens";
+import SCREENS from "../screens";
 
 // Images
-import Ruchenka from "../../../public/images/ruchenka.webp";
+import Ruchenka from "../../public/images/ruchenka.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -6,11 +6,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Button from "../button";
 import fluidType from "../fluid-typography";
-import SCREENS from "../../../components/screens";
+import SCREENS from "../screens";
 
 // images
-import Church from "../../../public/images/Ruchna-1.webp";
-import Ruchenka from "../../../public/images/Ruchna-2.webp";
+import Church from "../../public/images/Ruchna-1.webp";
+import Ruchenka from "../../public/images/Ruchna-2.webp";
 
 gsap.registerPlugin(ScrollTrigger);
 

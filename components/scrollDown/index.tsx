@@ -9,8 +9,8 @@ import React, {
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import fluidType from "../fluid-typography";
-import SCREENS from "../../../components/screens";
-import { MouseContext } from "../../../context/mouse-context";
+import SCREENS from "../screens";
+import { MouseContext } from "../../context/mouse-context";
 
 const CTA: StyledComponent<"a", Record<string, unknown>, {}, never> = styled.a`
   ${fluidType("480px", SCREENS.xl, "18px", "30px")}

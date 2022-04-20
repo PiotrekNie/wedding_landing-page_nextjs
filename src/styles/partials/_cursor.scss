@@ -1,4 +1,5 @@
 .ring {
+  box-shadow: none;
   transition-duration: 100ms;
   transition-timing-function: ease-out;
   will-change: width, height, transform, border;

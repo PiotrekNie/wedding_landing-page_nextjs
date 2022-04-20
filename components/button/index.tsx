@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
-import { MouseContext } from "../../../context/mouse-context";
+import { MouseContext } from "../../context/mouse-context";
 
 interface ButtonTypes {
   text: string;

@@ -7,10 +7,10 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { useMediaQuery } from "react-responsive";
 import ReactPlayer from "react-player/youtube";
 import fluidType from "../fluid-typography";
-import SCREENS from "../../../components/screens";
+import SCREENS from "../screens";
 import ScrollDown from "../scrollDown";
-import COLORS from "../../../components/colors";
-import { MouseContext } from "../../../context/mouse-context";
+import COLORS from "../colors";
+import { MouseContext } from "../../context/mouse-context";
 
 gsap.registerPlugin(ScrollTrigger);
 

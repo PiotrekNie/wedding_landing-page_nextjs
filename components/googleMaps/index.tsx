@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import tw from "twin.macro";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import SCREENS from "../../../components/screens";
+import SCREENS from "../screens";
 
 /**
  * Images
