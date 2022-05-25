@@ -1,4 +1,6 @@
 .gallery {
+  background: #ffffff url("../../../public/images/paper.webp") scroll repeat left top;
+
   &__container {
     &--col {
       @apply relative;
@@ -15,7 +17,7 @@
         @media screen and (min-width: $lg) {
           height: 420px;
 
-          @apply col-span-1 shadow-xl;
+          @apply col-span-1;
         }
       }
 

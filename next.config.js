@@ -35,6 +35,9 @@ const securityHeaders = [
 module.exports = {
   reactStrictMode: true,
   trailingSlash: true,
+  images: {
+    domains: ["media.graphassets.com"],
+  },
   webpackDevMiddleware: (config) => {
     config.watchOptions = {
       poll: 1000,

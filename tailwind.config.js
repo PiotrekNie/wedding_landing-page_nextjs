@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+const aspectRatio = require("@tailwindcss/aspect-ratio");
 
 module.exports = {
   content: ["./src/components/**/*.tsx", "./components/**/*.tsx", "./pages/**/*.tsx"],
@@ -90,6 +91,7 @@ module.exports = {
         screen: "100vw",
         min: "min-content",
         max: "max-content",
+        fit: "fit-content",
         xxs: "15.5rem",
         cta: "200px",
         fhd: "1920px",
@@ -125,5 +127,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [aspectRatio],
 };

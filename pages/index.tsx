@@ -19,6 +19,7 @@ import SectionVideo from "../components/videoPlayer";
 import SectionFooter from "../components/footer";
 import Cursor from "../components/coursor/index";
 import SCREENS from "../components/screens/index";
+import Favicon from "../components/favicon";
 import { MouseContext } from "../context/mouse-context";
 
 import "swiper/css";
@@ -277,7 +278,7 @@ export default function Home({ data }: { data: Sections }) {
         <title>Delfina&amp;Piotek</title>
         <meta name='description' content='Zapraszamy :)' />
         <meta name='robots' content='noindex' />
-        <link rel='icon' href='/favicon.ico' />
+        <Favicon />
       </Head>
 
       <main>
