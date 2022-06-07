@@ -12,6 +12,8 @@ import Image from "next/image";
 import { NextRouter, useRouter } from "next/router";
 import { useMediaQuery } from "react-responsive";
 import styled, { StyledComponent } from "styled-components";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import tw from "twin.macro";
 import consts from "consts";
 import Cookies from "universal-cookie";
@@ -20,6 +22,7 @@ import Favicon from "../../components/favicon";
 import Cursor from "../../components/coursor/index";
 import SCREENS from "../../components/screens";
 import { MouseContext } from "../../context/mouse-context";
+import fluidType from "../../components/fluid-typography";
 
 interface Props {
   hasReadPermission: boolean;
@@ -40,25 +43,174 @@ const Header: StyledComponent<"header", Record<string, unknown>, {}, never> = st
   }
 `;
 
+const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never> = styled.main`
+  ${tw`
+  relative bg-black
+`}
+
+  &:before,
+&:after {
+    transform: translate(-50%, -50%);
+
+    ${tw`
+  text-center fixed left-1/2 top-1/2  w-full h-full flex items-center justify-center pointer-events-none leading-none text-gray-300
+  `}
+  }
+
+  &:before {
+    content: "Dziękujemy za wspólną zabawę!";
+
+    ${tw`
+     font-serif md:pb-20 pb-10
+  `}
+
+    ${fluidType("480px", SCREENS.xl, "18px", "45px")}
+  }
+
+  &:after {
+    content: "Dela i Piotrek";
+
+    ${tw`
+     font-balnes md:pt-20 pt-10
+  `}
+
+    ${fluidType("480px", SCREENS.xl, "36px", "84px")}
+  }
+`;
+
+// const ModalImage: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+//   will-change: transform, opacity;
+
+//   ${tw`
+//     w-full h-full fixed top-0 left-0 md:p-8 p-4 flex justify-center items-center bg-white bg-opacity-80 transition-all duration-300 ease-in-out opacity-0 invisible transform scale-0 overflow-hidden pointer-events-none z-50
+//   `}
+
+//   &.open {
+//     ${tw`
+//       visible opacity-100 transform scale-100
+//     `}
+//   }
+
+//   img {
+//     ${tw`
+//       w-auto max-w-full h-auto max-h-full block z-10
+//     `}
+//   }
+// `;
+
+// const ModalClose: StyledComponent<"button", Record<string, unknown>, {}, never> = styled.button`
+//   ${tw`
+//     text-black text-3xl font-bold absolute right-4 top-4 w-9 h-9 z-20 pointer-events-auto
+//   `}
+// `;
+
+// const ImageContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+//   ${tw`
+//     md:h-full max-h-full max-w-fit flex items-center justify-center leading-none shadow-darken relative z-20 pointer-events-auto bg-white
+//   `}
+
+//   &:before {
+//     content: "Wczytuję...";
+//     transform: translate(-50%, -50%);
+
+//     ${tw`
+//       absolute left-1/2 top-1/2 text-sm text-gray-200 text-center pointer-events-none tracking-wider
+//     `}
+//   }
+// `;
+
+// const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
+//   ${fluidType("480px", SCREENS.xl, "40px", "100px")}
+
+//   ${tw`
+//     font-balnes block leading-none mb-4
+//   `}
+// `;
+
+// const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
+//   ${fluidType("480px", SCREENS.xl, "16px", "24px")}
+
+//   ${tw`
+//     font-serif text-2xl block leading-tight
+//   `}
+// `;
+
 export default function Protected({ hasReadPermission }: Props) {
+  // let img: HTMLImageElement;
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
     boolean | undefined,
     Dispatch<SetStateAction<boolean | undefined>>,
   ] = useState();
+  const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false);
+  const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
   const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const galleryContainer: HTMLDivElement = galleryRef.current as HTMLDivElement;
+    const infiniteScrollItems: HTMLDivElement = galleryContainer?.firstElementChild
+      ?.firstElementChild as HTMLDivElement;
+
     setDesktop(isDesktop);
 
+    // GSAP: Header
+    gsap.fromTo(
+      headerRef.current,
+      { y: "-=100" },
+      { y: "0", duration: 1, ease: "Power2.easeOut", delay: 4.25 },
+    );
+
     // GSAP: Header Logo
-    // const navAnimation: gsap.core.Tween = gsap.to(logoRef.current, {
-    //   scale: 0.6,
-    //   duration: 0.5,
-    //   ease: "Power2.easeOut",
-    //   paused: true,
-    // });
+    const navAnimation: gsap.core.Tween = gsap.to(logoRef.current, {
+      scale: 0.6,
+      duration: 0.5,
+      ease: "Power2.easeOut",
+      paused: true,
+    });
+
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "100px top",
+      end: "bottom bottom",
+      onUpdate: ({ direction, isActive }: { direction: number; isActive: boolean }) => {
+        if (direction === -1) {
+          navAnimation.reverse();
+        }
+        if (direction === 1) {
+          navAnimation.play();
+        }
+        if (direction === 1 && isActive) {
+          navAnimation.play();
+        }
+      },
+    });
+
+    // GSAP: Gallery Items
+    gsap.fromTo(
+      infiniteScrollItems?.children,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 1.5,
+        stagger: 0.2,
+        delay: 4.25,
+      },
+    );
+
+    // GSAP: Gallery Container
+    gsap.fromTo(
+      galleryContRef?.current,
+      { y: "+=100%" },
+      {
+        y: 0,
+        duration: 1.5,
+        delay: 3,
+        onComplete: () => setFinish(true),
+      },
+    );
   }, []);
 
   if (!hasReadPermission) {
@@ -119,6 +271,29 @@ export default function Protected({ hasReadPermission }: Props) {
           Wyloguj się
         </button>
       </Header>
+
+      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
+        <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
+          <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
+            {/* <InfiniteScroll
+              next={getMoreImages}
+              hasMore={hasMore}
+              loader={<h4>Wczytuję...</h4>}
+              dataLength={images.length}
+              endMessage={
+                <div className='text-center py-6 col-span-3'>
+                  <Heading4>To by było na tyle</Heading4>
+                  <Heading5>Do&nbsp;zobaczenia</Heading5>
+                </div>
+              }
+              className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
+              {images?.map((item: Image) => (
+                <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+              ))}
+            </InfiniteScroll> */}
+          </div>
+        </section>
+      </MainContainer>
     </>
   );
 }
