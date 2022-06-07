@@ -314,19 +314,19 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
     window.location.href = "/galeria";
   };
 
-  if (!hasReadPermission) {
-    return (
-      <>
-        {desktop && <Cursor />}
-        <Head>
-          <title>Dela &amp; Piotrek – Zaloguj się</title>
-          <meta name='robots' content='noindex' />
-          <Favicon />
-        </Head>
-        <Login redirectPath={router.asPath} />
-      </>
-    );
-  }
+  // if (!hasReadPermission) {
+  //   return (
+  //     <>
+  //       {desktop && <Cursor />}
+  //       <Head>
+  //         <title>Dela &amp; Piotrek – Zaloguj się</title>
+  //         <meta name='robots' content='noindex' />
+  //         <Favicon />
+  //       </Head>
+  //       <Login redirectPath={router.asPath} />
+  //     </>
+  //   );
+  // }
 
   return (
     <>
