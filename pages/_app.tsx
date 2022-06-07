@@ -21,7 +21,6 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   if (password === "dobrazabawa2022") {
     appProps.pageProps.hasReadPermission = true;
   }
-  console.log(appProps);
 
   return { ...appProps };
 };

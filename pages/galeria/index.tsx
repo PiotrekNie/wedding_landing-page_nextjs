@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import App, { AppContext, AppInitialProps } from "next/app";
 import { NextRouter, useRouter } from "next/router";
 import Cookies from "universal-cookie";
 import consts from "consts";
@@ -177,6 +176,7 @@ export const getStaticProps: () => Promise<{
 };
 
 function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
+  console.log(hasReadPermission);
   let img: HTMLImageElement;
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
