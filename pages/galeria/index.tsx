@@ -313,6 +313,8 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
     window.location.href = "/galeria";
   };
 
+  console.log(hasReadPermission);
+
   if (!hasReadPermission) {
     return (
       <>
