@@ -46,7 +46,6 @@ const ButtonItem: StyledComponent<"button", Record<string, unknown>, {}, never> 
 `;
 
 function Login({ redirectPath }: { redirectPath: string }) {
-  console.log("login:", redirectPath);
   const [password, setPassword]: [string, Dispatch<SetStateAction<string>>] = useState("");
   const {
     cursorChangeHandler,
