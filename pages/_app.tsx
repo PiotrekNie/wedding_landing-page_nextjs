@@ -14,12 +14,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-  let appProps: AppInitialProps = await App.getInitialProps(appContext);
-
+  const appProps: AppInitialProps = await App.getInitialProps(appContext);
   const cookies: Cookies = new Cookies(appContext?.ctx?.req?.headers?.cookie);
   const password: string = cookies.get(consts.SiteReadCookie) ?? "";
 
   if (password === "dobrazabawa2022") {
+    console.log(password);
     appProps.pageProps.hasReadPermission = true;
   }
 
