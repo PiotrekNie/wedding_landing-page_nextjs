@@ -328,6 +328,8 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
   //   );
   // }
 
+  console.log(hasReadPermission);
+
   return (
     <>
       {desktop && <Cursor />}
