@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-  const appProps: AppInitialProps = await App.getInitialProps(appContext);
+  let appProps: AppInitialProps = await App.getInitialProps(appContext);
 
   const cookies: Cookies = new Cookies(appContext?.ctx?.req?.headers?.cookie);
   const password: string = cookies.get(consts.SiteReadCookie) ?? "";
