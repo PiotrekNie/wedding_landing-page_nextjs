@@ -24,7 +24,7 @@ import Favicon from "../../components/favicon";
 import Cursor from "../../components/coursor/index";
 import SCREENS from "../../components/screens";
 import GetGallery, { GetGalleryItems } from "../../lib/data";
-import BlurImage from "../../components/gallery";
+// import BlurImage from "../../components/gallery";
 import { MouseContext } from "../../context/mouse-context";
 import fluidType from "../../components/fluid-typography";
 
@@ -175,7 +175,7 @@ const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = st
 `;
 
 export default function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
-  let img: HTMLImageElement;
+  // let img: HTMLImageElement;
 
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
@@ -205,28 +205,6 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
     const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
 
     setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
-  };
-  const getURL: (url: string) => Promise<unknown> = async (url: string) => {
-    // setTempImgSrc(url);
-    // setModel(true);
-
-    async function loadImage(imageUrl: string) {
-      const imageLoadPromise: Promise<unknown> = new Promise(
-        (resolve: (value: unknown) => void) => {
-          img = new window.Image();
-          img.onload = resolve;
-          img.src = imageUrl;
-        },
-      );
-
-      await imageLoadPromise;
-
-      return img;
-    }
-
-    await loadImage(url);
-
-    // setLoading(true);
   };
 
   useEffect(() => {
@@ -372,7 +350,8 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
               }
               className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
               {images?.map((item: Image) => (
-                <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+                // <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+                <div key={item.photos.id}>{item.photos.url}</div>
               ))}
             </InfiniteScroll>
           </div>
