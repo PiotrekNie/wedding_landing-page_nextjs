@@ -1,30 +1,32 @@
 import React, {
+  MouseEvent,
+  useEffect,
+  useState,
   Dispatch,
   SetStateAction,
   useContext,
-  useEffect,
   useRef,
-  useState,
-  MouseEvent,
 } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { NextRouter, useRouter } from "next/router";
+import Cookies from "universal-cookie";
+import consts from "consts";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useMediaQuery } from "react-responsive";
 import styled, { StyledComponent } from "styled-components";
+import tw from "twin.macro";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import tw from "twin.macro";
-import consts from "consts";
-import Cookies from "universal-cookie";
 import { GraphQLClient } from "graphql-request";
 import Login from "../../components/login";
-import Favicon from "../../components/favicon";
+import BlurImage from "../../components/gallery";
+import SCREENS from "../../components/screens/index";
 import Cursor from "../../components/coursor/index";
-import SCREENS from "../../components/screens";
+import GetGallery, { GetGalleryItems } from "../../lib/data";
 import { MouseContext } from "../../context/mouse-context";
 import fluidType from "../../components/fluid-typography";
-import { GetGalleryItems } from "../../lib/data";
+import Favicon from "../../components/favicon";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -37,14 +39,18 @@ interface Image {
     width: number;
   };
 }
+
 export interface GalleryItems {
   weddingGalleries: Image[];
 }
 
-interface Props {
+interface FunctionProps {
   hasReadPermission: boolean;
   data: GalleryItems;
+  allImages: GalleryItems;
 }
+
+const offset: number = 0;
 
 const Header: StyledComponent<"header", Record<string, unknown>, {}, never> = styled.header`
   transform: translateX(-50%);
@@ -96,64 +102,62 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
   }
 `;
 
-// const ModalImage: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
-//   will-change: transform, opacity;
+const ModalImage: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  will-change: transform, opacity;
 
-//   ${tw`
-//     w-full h-full fixed top-0 left-0 md:p-8 p-4 flex justify-center items-center bg-white bg-opacity-80 transition-all duration-300 ease-in-out opacity-0 invisible transform scale-0 overflow-hidden pointer-events-none z-50
-//   `}
+  ${tw`
+    w-full h-full fixed top-0 left-0 md:p-8 p-4 flex justify-center items-center bg-white bg-opacity-80 transition-all duration-300 ease-in-out opacity-0 invisible transform scale-0 overflow-hidden pointer-events-none z-50
+  `}
 
-//   &.open {
-//     ${tw`
-//       visible opacity-100 transform scale-100
-//     `}
-//   }
+  &.open {
+    ${tw`
+      visible opacity-100 transform scale-100
+    `}
+  }
 
-//   img {
-//     ${tw`
-//       w-auto max-w-full h-auto max-h-full block z-10
-//     `}
-//   }
-// `;
+  img {
+    ${tw`
+      w-auto max-w-full h-auto max-h-full block z-10
+    `}
+  }
+`;
 
-// const ModalClose: StyledComponent<"button", Record<string, unknown>, {}, never> = styled.button`
-//   ${tw`
-//     text-black text-3xl font-bold absolute right-4 top-4 w-9 h-9 z-20 pointer-events-auto
-//   `}
-// `;
+const ModalClose: StyledComponent<"button", Record<string, unknown>, {}, never> = styled.button`
+  ${tw`
+    text-black text-3xl font-bold absolute right-4 top-4 w-9 h-9 z-20 pointer-events-auto
+  `}
+`;
 
-// const ImageContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
-//   ${tw`
-//     md:h-full max-h-full max-w-fit flex items-center justify-center leading-none shadow-darken relative z-20 pointer-events-auto bg-white
-//   `}
+const ImageContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
+  ${tw`
+    md:h-full max-h-full max-w-fit flex items-center justify-center leading-none shadow-darken relative z-20 pointer-events-auto bg-white
+  `}
 
-//   &:before {
-//     content: "Wczytuję...";
-//     transform: translate(-50%, -50%);
+  &:before {
+    content: "Wczytuję...";
+    transform: translate(-50%, -50%);
 
-//     ${tw`
-//       absolute left-1/2 top-1/2 text-sm text-gray-200 text-center pointer-events-none tracking-wider
-//     `}
-//   }
-// `;
+    ${tw`
+      absolute left-1/2 top-1/2 text-sm text-gray-200 text-center pointer-events-none tracking-wider
+    `}
+  }
+`;
 
-// const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
-//   ${fluidType("480px", SCREENS.xl, "40px", "100px")}
+const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
+  ${fluidType("480px", SCREENS.xl, "40px", "100px")}
 
-//   ${tw`
-//     font-balnes block leading-none mb-4
-//   `}
-// `;
+  ${tw`
+    font-balnes block leading-none mb-4
+  `}
+`;
 
-// const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
-//   ${fluidType("480px", SCREENS.xl, "16px", "24px")}
+const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
+  ${fluidType("480px", SCREENS.xl, "16px", "24px")}
 
-//   ${tw`
-//     font-serif text-2xl block leading-tight
-//   `}
-// `;
-
-const offset: number = 0;
+  ${tw`
+    font-serif text-2xl block leading-tight
+  `}
+`;
 
 export const getStaticProps: () => Promise<{
   props: {
@@ -161,28 +165,76 @@ export const getStaticProps: () => Promise<{
   };
 }> = async () => {
   const data: GraphQLClient = await GetGalleryItems(offset);
+  const allImages: GraphQLClient = await GetGallery();
 
   return {
     props: {
       data,
+      allImages,
     },
   };
 };
 
-export default function Protected({ hasReadPermission, data }: Props) {
-  console.log(hasReadPermission, data);
-  // let img: HTMLImageElement;
-  const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
+  let img: HTMLImageElement;
+  const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false);
+  const [loading, setLoading]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false);
+  const { weddingGalleries }: GalleryItems = data;
+  const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
+  const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const {
+    cursorChangeHandler,
+  }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
+  const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
+    useState(weddingGalleries);
+  const [hasMore, setHasMore]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+    useState<boolean>(true);
   const [desktop, setDesktop]: [
     boolean | undefined,
     Dispatch<SetStateAction<boolean | undefined>>,
   ] = useState();
-  const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
+  const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
+  const [model, setModel]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
     useState<boolean>(false);
-  const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-  const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
-  const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-  const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const [tempImgSrc, setTempImgSrc]: [string, React.Dispatch<React.SetStateAction<string>>] =
+    useState<string>("");
+  const getMoreImages: () => Promise<void> = async () => {
+    const galleryData: GraphQLClient = await GetGalleryItems(images.length);
+
+    const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
+
+    setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
+  };
+  const getURL: (url: string) => Promise<unknown> = async (url: string) => {
+    setTempImgSrc(url);
+    setModel(true);
+
+    async function loadImage(imageUrl: string) {
+      const imageLoadPromise: Promise<unknown> = new Promise(
+        (resolve: (value: unknown) => void) => {
+          img = new window.Image();
+          img.onload = resolve;
+          img.src = imageUrl;
+        },
+      );
+
+      await imageLoadPromise;
+
+      return img;
+    }
+
+    await loadImage(url);
+
+    setLoading(true);
+  };
+
+  useEffect(() => {
+    setHasMore(allImages.weddingGalleries.length > images.length);
+  }, [images]);
 
   useEffect(() => {
     const galleryContainer: HTMLDivElement = galleryRef.current as HTMLDivElement;
@@ -248,6 +300,17 @@ export default function Protected({ hasReadPermission, data }: Props) {
     );
   }, []);
 
+  const LogOut: (ev: MouseEvent<HTMLButtonElement>) => void = (
+    ev: MouseEvent<HTMLButtonElement>,
+  ) => {
+    ev.preventDefault();
+
+    const cookies: Cookies = new Cookies();
+
+    cookies.remove(consts.SiteReadCookie, { path: "/" });
+    window.location.href = "/galeria";
+  };
+
   // if (!hasReadPermission) {
   //   const router: NextRouter = useRouter();
 
@@ -263,20 +326,6 @@ export default function Protected({ hasReadPermission, data }: Props) {
   //     </>
   //   );
   // }
-
-  const {
-    cursorChangeHandler,
-  }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
-  const LogOut: (ev: MouseEvent<HTMLButtonElement>) => void = (
-    ev: MouseEvent<HTMLButtonElement>,
-  ) => {
-    ev.preventDefault();
-
-    const cookies: Cookies = new Cookies();
-
-    cookies.remove(consts.SiteReadCookie, { path: "/" });
-    window.location.href = "/galeria";
-  };
 
   return (
     <>
@@ -306,11 +355,10 @@ export default function Protected({ hasReadPermission, data }: Props) {
           Wyloguj się
         </button>
       </Header>
-
       <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
         <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
           <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-            {/* <InfiniteScroll
+            <InfiniteScroll
               next={getMoreImages}
               hasMore={hasMore}
               loader={<h4>Wczytuję...</h4>}
@@ -325,10 +373,38 @@ export default function Protected({ hasReadPermission, data }: Props) {
               {images?.map((item: Image) => (
                 <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
               ))}
-            </InfiniteScroll> */}
+            </InfiniteScroll>
           </div>
         </section>
+        <ModalImage className={model ? "model open" : "model"}>
+          <ModalClose
+            onClick={() => {
+              setModel(false);
+              setLoading(false);
+            }}
+            onMouseEnter={() => cursorChangeHandler("hovered")}
+            onMouseLeave={() => cursorChangeHandler("")}>
+            &times;
+          </ModalClose>
+          <div
+            onClick={() => {
+              setModel(false);
+              setLoading(false);
+            }}
+            aria-hidden='true'
+            className='block absolute w-full h-full top-0 left-0 z-0 pointer-events-auto'
+          />
+          <ImageContainer>
+            <img
+              src={tempImgSrc}
+              alt='temporary img'
+              className={loading ? "opacity-100 visible" : "opacity-0 invisible"}
+            />
+          </ImageContainer>
+        </ModalImage>
       </MainContainer>
     </>
   );
 }
+
+export default Protected;
