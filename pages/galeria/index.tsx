@@ -178,8 +178,8 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
     boolean | undefined,
     Dispatch<SetStateAction<boolean | undefined>>,
   ] = useState();
-  const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
-    useState<boolean>(false);
+  // const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
+  //   useState<boolean>(false);
   // const { weddingGalleries }: GalleryItems = data;
   // const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
   //   useState(weddingGalleries);
@@ -255,16 +255,16 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
     );
 
     // GSAP: Gallery Container
-    gsap.fromTo(
-      galleryContRef?.current,
-      { y: "+=100%" },
-      {
-        y: 0,
-        duration: 1.5,
-        delay: 3,
-        onComplete: () => setFinish(true),
-      },
-    );
+    // gsap.fromTo(
+    //   galleryContRef?.current,
+    //   { y: "+=100%" },
+    //   {
+    //     y: 0,
+    //     duration: 1.5,
+    //     delay: 3,
+    //     onComplete: () => setFinish(true),
+    //   },
+    // );
   }, []);
 
   // useEffect(() => {
@@ -329,8 +329,6 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
           Wyloguj się
         </button>
       </Header>
-
-      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"} />
     </>
   );
 }
