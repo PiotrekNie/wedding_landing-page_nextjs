@@ -170,7 +170,7 @@ export const getStaticProps: () => Promise<{
 };
 
 export default function Protected({ hasReadPermission, data }: Props) {
-  console.log(data);
+  console.log(hasReadPermission, data);
   // let img: HTMLImageElement;
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
@@ -248,21 +248,21 @@ export default function Protected({ hasReadPermission, data }: Props) {
     );
   }, []);
 
-  if (!hasReadPermission) {
-    const router: NextRouter = useRouter();
+  // if (!hasReadPermission) {
+  //   const router: NextRouter = useRouter();
 
-    return (
-      <>
-        {desktop && <Cursor />}
-        <Head>
-          <title>Dela &amp; Piotrek – Zaloguj się</title>
-          <meta name='robots' content='noindex' />
-          <Favicon />
-        </Head>
-        <Login redirectPath={router.asPath} />
-      </>
-    );
-  }
+  //   return (
+  //     <>
+  //       {desktop && <Cursor />}
+  //       <Head>
+  //         <title>Dela &amp; Piotrek – Zaloguj się</title>
+  //         <meta name='robots' content='noindex' />
+  //         <Favicon />
+  //       </Head>
+  //       <Login redirectPath={router.asPath} />
+  //     </>
+  //   );
+  // }
 
   const {
     cursorChangeHandler,
