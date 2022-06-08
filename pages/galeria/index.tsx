@@ -329,86 +329,84 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
   //   );
   // }
 
-  if (hasReadPermission) {
-    return (
-      <>
-        {desktop && <Cursor />}
-        <Head>
-          <title>Dela &amp; Piotrek – Dziękujemy za wspólną zabawę :&#41;</title>
-          <meta name='robots' content='noindex' />
-          <Favicon />
-        </Head>
+  return (
+    <>
+      {desktop && <Cursor />}
+      <Head>
+        <title>Dela &amp; Piotrek – Dziękujemy za wspólną zabawę :&#41;</title>
+        <meta name='robots' content='noindex' />
+        <Favicon />
+      </Head>
 
-        <Header ref={headerRef}>
-          <div ref={logoRef} className='md:mx-auto md:w-auto w-14'>
-            <a
-              href='/'
-              onMouseEnter={() => cursorChangeHandler("hovered")}
-              onMouseLeave={() => cursorChangeHandler("")}>
-              <Image src='/images/logo.svg' width='80' height='65' alt='Dela&amp;Piotrek' />
-            </a>
-          </div>
-          <button
-            className='font-bold hover:underline'
-            onClick={(ev: MouseEvent<HTMLButtonElement>) => LogOut(ev)}
+      <Header ref={headerRef}>
+        <div ref={logoRef} className='md:mx-auto md:w-auto w-14'>
+          <a
+            href='/'
             onMouseEnter={() => cursorChangeHandler("hovered")}
-            onMouseLeave={() => cursorChangeHandler("")}
-            role='link'
-            type='button'>
-            Wyloguj się
-          </button>
-        </Header>
-        <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
-          <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
-            <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-              <InfiniteScroll
-                next={getMoreImages}
-                hasMore={hasMore}
-                loader={<h4>Wczytuję...</h4>}
-                dataLength={images.length}
-                endMessage={
-                  <div className='text-center py-6 col-span-3'>
-                    <Heading4>To by było na tyle</Heading4>
-                    <Heading5>Do&nbsp;zobaczenia</Heading5>
-                  </div>
-                }
-                className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
-                {images?.map((item: Image) => (
-                  <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
-                ))}
-              </InfiniteScroll>
-            </div>
-          </section>
-          <ModalImage className={model ? "model open" : "model"}>
-            <ModalClose
-              onClick={() => {
-                setModel(false);
-                setLoading(false);
-              }}
-              onMouseEnter={() => cursorChangeHandler("hovered")}
-              onMouseLeave={() => cursorChangeHandler("")}>
-              &times;
-            </ModalClose>
-            <div
-              onClick={() => {
-                setModel(false);
-                setLoading(false);
-              }}
-              aria-hidden='true'
-              className='block absolute w-full h-full top-0 left-0 z-0 pointer-events-auto'
+            onMouseLeave={() => cursorChangeHandler("")}>
+            <Image src='/images/logo.svg' width='80' height='65' alt='Dela&amp;Piotrek' />
+          </a>
+        </div>
+        <button
+          className='font-bold hover:underline'
+          onClick={(ev: MouseEvent<HTMLButtonElement>) => LogOut(ev)}
+          onMouseEnter={() => cursorChangeHandler("hovered")}
+          onMouseLeave={() => cursorChangeHandler("")}
+          role='link'
+          type='button'>
+          Wyloguj się
+        </button>
+      </Header>
+      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
+        <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
+          <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
+            <InfiniteScroll
+              next={getMoreImages}
+              hasMore={hasMore}
+              loader={<h4>Wczytuję...</h4>}
+              dataLength={images.length}
+              endMessage={
+                <div className='text-center py-6 col-span-3'>
+                  <Heading4>To by było na tyle</Heading4>
+                  <Heading5>Do&nbsp;zobaczenia</Heading5>
+                </div>
+              }
+              className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
+              {images?.map((item: Image) => (
+                <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+              ))}
+            </InfiniteScroll>
+          </div>
+        </section>
+        <ModalImage className={model ? "model open" : "model"}>
+          <ModalClose
+            onClick={() => {
+              setModel(false);
+              setLoading(false);
+            }}
+            onMouseEnter={() => cursorChangeHandler("hovered")}
+            onMouseLeave={() => cursorChangeHandler("")}>
+            &times;
+          </ModalClose>
+          <div
+            onClick={() => {
+              setModel(false);
+              setLoading(false);
+            }}
+            aria-hidden='true'
+            className='block absolute w-full h-full top-0 left-0 z-0 pointer-events-auto'
+          />
+          <ImageContainer>
+            <img
+              src={tempImgSrc}
+              alt='temporary img'
+              className={loading ? "opacity-100 visible" : "opacity-0 invisible"}
             />
-            <ImageContainer>
-              <img
-                src={tempImgSrc}
-                alt='temporary img'
-                className={loading ? "opacity-100 visible" : "opacity-0 invisible"}
-              />
-            </ImageContainer>
-          </ModalImage>
-        </MainContainer>
-      </>
-    );
-  }
+          </ImageContainer>
+        </ModalImage>
+      </MainContainer>
+    </>
+  );
 }
 
 export default Protected;
