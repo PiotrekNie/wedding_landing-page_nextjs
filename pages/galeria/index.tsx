@@ -17,7 +17,7 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import tw from "twin.macro";
 import consts from "consts";
 import Cookies from "universal-cookie";
-import InfiniteScroll from "react-infinite-scroll-component";
+// import InfiniteScroll from "react-infinite-scroll-component";
 import { GraphQLClient } from "graphql-request";
 import Login from "../../components/login";
 import Favicon from "../../components/favicon";
@@ -158,21 +158,21 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 //   }
 // `;
 
-const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
-  ${fluidType("480px", SCREENS.xl, "40px", "100px")}
+// const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
+//   ${fluidType("480px", SCREENS.xl, "40px", "100px")}
 
-  ${tw`
-    font-balnes block leading-none mb-4
-  `}
-`;
+//   ${tw`
+//     font-balnes block leading-none mb-4
+//   `}
+// `;
 
-const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
-  ${fluidType("480px", SCREENS.xl, "16px", "24px")}
+// const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
+//   ${fluidType("480px", SCREENS.xl, "16px", "24px")}
 
-  ${tw`
-    font-serif text-2xl block leading-tight
-  `} //
-`;
+//   ${tw`
+//     font-serif text-2xl block leading-tight
+//   `} //
+// `;
 
 export default function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
   // let img: HTMLImageElement;
@@ -203,7 +203,7 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
     const galleryData: GraphQLClient = await GetGalleryItems(images.length);
 
     const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
-
+    console.log(images);
     setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
   };
 
@@ -337,23 +337,10 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
       <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
         <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
           <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-            <InfiniteScroll
-              next={getMoreImages}
-              hasMore={hasMore}
-              loader={<h4>Wczytuję...</h4>}
-              dataLength={images.length}
-              endMessage={
-                <div className='text-center py-6 col-span-3'>
-                  <Heading4>To by było na tyle</Heading4>
-                  <Heading5>Do&nbsp;zobaczenia</Heading5>
-                </div>
-              }
-              className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
-              {images?.map((item: Image) => (
-                // <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
-                <div key={item.photos.id}>{item.photos.url}</div>
-              ))}
-            </InfiniteScroll>
+            {images?.map((item: Image) =>
+              // <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+              console.log(item),
+            )}
           </div>
         </section>
       </MainContainer>
