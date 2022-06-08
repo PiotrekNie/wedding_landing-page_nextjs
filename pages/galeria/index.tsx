@@ -330,13 +330,7 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
         </button>
       </Header>
 
-      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
-        <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
-          <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-            <p>test132</p>
-          </div>
-        </section>
-      </MainContainer>
+      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}></MainContainer>
     </>
   );
 }
