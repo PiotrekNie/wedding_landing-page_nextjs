@@ -17,51 +17,16 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import tw from "twin.macro";
 import consts from "consts";
 import Cookies from "universal-cookie";
-// import InfiniteScroll from "react-infinite-scroll-component";
-import { GraphQLClient } from "graphql-request";
 import Login from "../../components/login";
 import Favicon from "../../components/favicon";
 import Cursor from "../../components/coursor/index";
 import SCREENS from "../../components/screens";
-import GetGallery, { GetGalleryItems } from "../../lib/data";
-// import BlurImage from "../../components/gallery";
 import { MouseContext } from "../../context/mouse-context";
 import fluidType from "../../components/fluid-typography";
 
-gsap.registerPlugin(ScrollTrigger);
-
-interface Image {
-  photos: {
-    id: string;
-    url: string;
-    fileName: string;
-    height: number;
-    width: number;
-  };
-}
-
-export interface GalleryItems {
-  weddingGalleries: Image[];
-}
-
-interface FunctionProps {
+interface Props {
   hasReadPermission: boolean;
 }
-
-export const getStaticProps: () => Promise<{
-  props: {
-    data: GraphQLClient;
-  };
-}> = async () => {
-  const offset: number = 0;
-  const data: GraphQLClient = await GetGalleryItems(offset);
-
-  return {
-    props: {
-      data,
-    },
-  };
-};
 
 const Header: StyledComponent<"header", Record<string, unknown>, {}, never> = styled.header`
   transform: translateX(-50%);
@@ -167,41 +132,22 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 
 //   ${tw`
 //     font-serif text-2xl block leading-tight
-//   `} //
+//   `}
 // `;
 
-export default function Protected({ hasReadPermission }: FunctionProps) {
+export default function Protected({ hasReadPermission }: Props) {
   // let img: HTMLImageElement;
-
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
     boolean | undefined,
     Dispatch<SetStateAction<boolean | undefined>>,
   ] = useState();
-  // const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
-  //   useState<boolean>(false);
-  // const { weddingGalleries }: GalleryItems = data;
-  // const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
-  //   useState(weddingGalleries);
-  // const [loading, setLoading]: [boolean, Dispatch<SetStateAction<boolean>>] =
-  //   useState<boolean>(false);
-  // const [tempImgSrc, setTempImgSrc]: [string, React.Dispatch<React.SetStateAction<string>>] =
-  //   useState<string>("");
-  // const [model, setModel]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-  //   useState<boolean>(false);
-  // const [hasMore, setHasMore]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-  //   useState<boolean>(true);
+  const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
+    useState<boolean>(false);
   const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
   const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-  // const getMoreImages: () => Promise<void> = async () => {
-  //   const galleryData: GraphQLClient = await GetGalleryItems(images.length);
-
-  //   const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
-  //   console.log(images);
-  //   setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
-  // };
 
   useEffect(() => {
     const galleryContainer: HTMLDivElement = galleryRef.current as HTMLDivElement;
@@ -255,21 +201,17 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
     );
 
     // GSAP: Gallery Container
-    // gsap.fromTo(
-    //   galleryContRef?.current,
-    //   { y: "+=100%" },
-    //   {
-    //     y: 0,
-    //     duration: 1.5,
-    //     delay: 3,
-    //     onComplete: () => setFinish(true),
-    //   },
-    // );
+    gsap.fromTo(
+      galleryContRef?.current,
+      { y: "+=100%" },
+      {
+        y: 0,
+        duration: 1.5,
+        delay: 3,
+        onComplete: () => setFinish(true),
+      },
+    );
   }, []);
-
-  // useEffect(() => {
-  //   setHasMore(allImages.weddingGalleries.length > images.length);
-  // }, [images]);
 
   if (!hasReadPermission) {
     const router: NextRouter = useRouter();
@@ -329,6 +271,29 @@ export default function Protected({ hasReadPermission }: FunctionProps) {
           Wyloguj się
         </button>
       </Header>
+
+      <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
+        <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
+          <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
+            {/* <InfiniteScroll
+              next={getMoreImages}
+              hasMore={hasMore}
+              loader={<h4>Wczytuję...</h4>}
+              dataLength={images.length}
+              endMessage={
+                <div className='text-center py-6 col-span-3'>
+                  <Heading4>To by było na tyle</Heading4>
+                  <Heading5>Do&nbsp;zobaczenia</Heading5>
+                </div>
+              }
+              className='grid md:grid-cols-3 sm:grid-cols-2 gap-4'>
+              {images?.map((item: Image) => (
+                <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
+              ))}
+            </InfiniteScroll> */}
+          </div>
+        </section>
+      </MainContainer>
     </>
   );
 }
