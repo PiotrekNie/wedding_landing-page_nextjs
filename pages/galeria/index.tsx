@@ -315,17 +315,11 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
     console.log("hasReadPermission");
     // const router: NextRouter = useRouter();
 
-    // return (
-    //   <>
-    //     {desktop && <Cursor />}
-    //     <Head>
-    //       <title>Dela &amp; Piotrek – Zaloguj się</title>
-    //       <meta name='robots' content='noindex' />
-    //       <Favicon />
-    //     </Head>
-    //     <Login redirectPath={router.asPath} />
-    //   </>
-    // );
+    return (
+      <>
+        <div>test router</div>
+      </>
+    );
   }
 
   return (
