@@ -17,16 +17,55 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import tw from "twin.macro";
 import consts from "consts";
 import Cookies from "universal-cookie";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { GraphQLClient } from "graphql-request";
 import Login from "../../components/login";
 import Favicon from "../../components/favicon";
 import Cursor from "../../components/coursor/index";
 import SCREENS from "../../components/screens";
+import GetGallery, { GetGalleryItems } from "../../lib/data";
+import BlurImage from "../../components/gallery";
 import { MouseContext } from "../../context/mouse-context";
 import fluidType from "../../components/fluid-typography";
 
-interface Props {
-  hasReadPermission: boolean;
+gsap.registerPlugin(ScrollTrigger);
+
+interface Image {
+  photos: {
+    id: string;
+    url: string;
+    fileName: string;
+    height: number;
+    width: number;
+  };
 }
+
+export interface GalleryItems {
+  weddingGalleries: Image[];
+}
+
+interface FunctionProps {
+  hasReadPermission: boolean;
+  data: GalleryItems;
+  allImages: GalleryItems;
+}
+
+export const getStaticProps: () => Promise<{
+  props: {
+    data: GraphQLClient;
+  };
+}> = async () => {
+  const offset: number = 0;
+  const data: GraphQLClient = await GetGalleryItems(offset);
+  const allImages: GraphQLClient = await GetGallery();
+
+  return {
+    props: {
+      data,
+      allImages,
+    },
+  };
+};
 
 const Header: StyledComponent<"header", Record<string, unknown>, {}, never> = styled.header`
   transform: translateX(-50%);
@@ -119,24 +158,25 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 //   }
 // `;
 
-// const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
-//   ${fluidType("480px", SCREENS.xl, "40px", "100px")}
+const Heading4: StyledComponent<"h4", Record<string, unknown>, {}, never> = styled.h4`
+  ${fluidType("480px", SCREENS.xl, "40px", "100px")}
 
-//   ${tw`
-//     font-balnes block leading-none mb-4
-//   `}
-// `;
+  ${tw`
+    font-balnes block leading-none mb-4
+  `}
+`;
 
-// const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
-//   ${fluidType("480px", SCREENS.xl, "16px", "24px")}
+const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = styled.span`
+  ${fluidType("480px", SCREENS.xl, "16px", "24px")}
 
-//   ${tw`
-//     font-serif text-2xl block leading-tight
-//   `}
-// `;
+  ${tw`
+    font-serif text-2xl block leading-tight
+  `} //
+`;
 
-export default function Protected({ hasReadPermission }: Props) {
-  // let img: HTMLImageElement;
+export default function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
+  let img: HTMLImageElement;
+
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
     boolean | undefined,
@@ -144,10 +184,50 @@ export default function Protected({ hasReadPermission }: Props) {
   ] = useState();
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
+  const { weddingGalleries }: GalleryItems = data;
+  const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
+    useState(weddingGalleries);
+  // const [loading, setLoading]: [boolean, Dispatch<SetStateAction<boolean>>] =
+  //   useState<boolean>(false);
+  // const [tempImgSrc, setTempImgSrc]: [string, React.Dispatch<React.SetStateAction<string>>] =
+  //   useState<string>("");
+  // const [model, setModel]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+  //   useState<boolean>(false);
+  const [hasMore, setHasMore]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+    useState<boolean>(true);
   const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
   const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+  const getMoreImages: () => Promise<void> = async () => {
+    const galleryData: GraphQLClient = await GetGalleryItems(images.length);
+
+    const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
+
+    setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
+  };
+  const getURL: (url: string) => Promise<unknown> = async (url: string) => {
+    // setTempImgSrc(url);
+    // setModel(true);
+
+    async function loadImage(imageUrl: string) {
+      const imageLoadPromise: Promise<unknown> = new Promise(
+        (resolve: (value: unknown) => void) => {
+          img = new window.Image();
+          img.onload = resolve;
+          img.src = imageUrl;
+        },
+      );
+
+      await imageLoadPromise;
+
+      return img;
+    }
+
+    await loadImage(url);
+
+    // setLoading(true);
+  };
 
   useEffect(() => {
     const galleryContainer: HTMLDivElement = galleryRef.current as HTMLDivElement;
@@ -213,6 +293,10 @@ export default function Protected({ hasReadPermission }: Props) {
     );
   }, []);
 
+  useEffect(() => {
+    setHasMore(allImages.weddingGalleries.length > images.length);
+  }, [images]);
+
   if (!hasReadPermission) {
     const router: NextRouter = useRouter();
 
@@ -275,7 +359,7 @@ export default function Protected({ hasReadPermission }: Props) {
       <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
         <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
           <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-            {/* <InfiniteScroll
+            <InfiniteScroll
               next={getMoreImages}
               hasMore={hasMore}
               loader={<h4>Wczytuję...</h4>}
@@ -290,7 +374,7 @@ export default function Protected({ hasReadPermission }: Props) {
               {images?.map((item: Image) => (
                 <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
               ))}
-            </InfiniteScroll> */}
+            </InfiniteScroll>
           </div>
         </section>
       </MainContainer>
