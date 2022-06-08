@@ -46,7 +46,6 @@ export interface GalleryItems {
 
 interface FunctionProps {
   hasReadPermission: boolean;
-  data: GalleryItems;
 }
 
 export const getStaticProps: () => Promise<{
@@ -171,7 +170,7 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 //   `} //
 // `;
 
-export default function Protected({ hasReadPermission, data }: FunctionProps) {
+export default function Protected({ hasReadPermission }: FunctionProps) {
   // let img: HTMLImageElement;
 
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
@@ -181,9 +180,9 @@ export default function Protected({ hasReadPermission, data }: FunctionProps) {
   ] = useState();
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
-  const { weddingGalleries }: GalleryItems = data;
-  const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
-    useState(weddingGalleries);
+  // const { weddingGalleries }: GalleryItems = data;
+  // const [images, setImages]: [Image[], React.Dispatch<React.SetStateAction<Image[]>>] =
+  //   useState(weddingGalleries);
   // const [loading, setLoading]: [boolean, Dispatch<SetStateAction<boolean>>] =
   //   useState<boolean>(false);
   // const [tempImgSrc, setTempImgSrc]: [string, React.Dispatch<React.SetStateAction<string>>] =
@@ -334,10 +333,7 @@ export default function Protected({ hasReadPermission, data }: FunctionProps) {
       <MainContainer className={finish ? "" : "overflow-hidden max-h-screen"}>
         <section ref={galleryContRef} className='gallery md:pt-24 pt-16 relative z-20'>
           <div className='container max-w-fhd px-2 md:px-4 sm:pb-0 pb-12' ref={galleryRef}>
-            {images?.map((item: Image) =>
-              // <BlurImage key={item.photos.id} image={item} imageUrl={getURL} />
-              console.log(item),
-            )}
+            <p>test132</p>
           </div>
         </section>
       </MainContainer>
