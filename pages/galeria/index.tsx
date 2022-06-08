@@ -17,15 +17,33 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import tw from "twin.macro";
 import consts from "consts";
 import Cookies from "universal-cookie";
+import { GraphQLClient } from "graphql-request";
 import Login from "../../components/login";
 import Favicon from "../../components/favicon";
 import Cursor from "../../components/coursor/index";
 import SCREENS from "../../components/screens";
 import { MouseContext } from "../../context/mouse-context";
 import fluidType from "../../components/fluid-typography";
+import { GetGalleryItems } from "../../lib/data";
+
+gsap.registerPlugin(ScrollTrigger);
+
+interface Image {
+  photos: {
+    id: string;
+    url: string;
+    fileName: string;
+    height: number;
+    width: number;
+  };
+}
+export interface GalleryItems {
+  weddingGalleries: Image[];
+}
 
 interface Props {
   hasReadPermission: boolean;
+  data: GalleryItems;
 }
 
 const Header: StyledComponent<"header", Record<string, unknown>, {}, never> = styled.header`
@@ -135,7 +153,24 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 //   `}
 // `;
 
-export default function Protected({ hasReadPermission }: Props) {
+const offset: number = 0;
+
+export const getStaticProps: () => Promise<{
+  props: {
+    data: GraphQLClient;
+  };
+}> = async () => {
+  const data: GraphQLClient = await GetGalleryItems(offset);
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+export default function Protected({ hasReadPermission, data }: Props) {
+  console.log(data);
   // let img: HTMLImageElement;
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
   const [desktop, setDesktop]: [
