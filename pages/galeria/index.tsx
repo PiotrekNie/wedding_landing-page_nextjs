@@ -47,7 +47,6 @@ export interface GalleryItems {
 interface FunctionProps {
   hasReadPermission: boolean;
   data: GalleryItems;
-  allImages: GalleryItems;
 }
 
 export const getStaticProps: () => Promise<{
@@ -57,12 +56,10 @@ export const getStaticProps: () => Promise<{
 }> = async () => {
   const offset: number = 0;
   const data: GraphQLClient = await GetGalleryItems(offset);
-  const allImages: GraphQLClient = await GetGallery();
 
   return {
     props: {
       data,
-      allImages,
     },
   };
 };
@@ -174,7 +171,7 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 //   `} //
 // `;
 
-export default function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
+export default function Protected({ hasReadPermission, data }: FunctionProps) {
   // let img: HTMLImageElement;
 
   const isDesktop: boolean = useMediaQuery({ minWidth: SCREENS.md });
@@ -193,19 +190,19 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
   //   useState<string>("");
   // const [model, setModel]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
   //   useState<boolean>(false);
-  const [hasMore, setHasMore]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
-    useState<boolean>(true);
+  // const [hasMore, setHasMore]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] =
+  //   useState<boolean>(true);
   const galleryRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const headerRef: React.RefObject<HTMLElement> = useRef<HTMLElement>(null);
   const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
   const galleryContRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-  const getMoreImages: () => Promise<void> = async () => {
-    const galleryData: GraphQLClient = await GetGalleryItems(images.length);
+  // const getMoreImages: () => Promise<void> = async () => {
+  //   const galleryData: GraphQLClient = await GetGalleryItems(images.length);
 
-    const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
-    console.log(images);
-    setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
-  };
+  //   const { weddingGalleries }: GalleryItems = galleryData as unknown as GalleryItems; // eslint-disable-line no-shadow
+  //   console.log(images);
+  //   setImages((imageItems: Image[]) => [...imageItems, ...weddingGalleries]);
+  // };
 
   useEffect(() => {
     const galleryContainer: HTMLDivElement = galleryRef.current as HTMLDivElement;
@@ -271,9 +268,9 @@ export default function Protected({ hasReadPermission, data, allImages }: Functi
     );
   }, []);
 
-  useEffect(() => {
-    setHasMore(allImages.weddingGalleries.length > images.length);
-  }, [images]);
+  // useEffect(() => {
+  //   setHasMore(allImages.weddingGalleries.length > images.length);
+  // }, [images]);
 
   if (!hasReadPermission) {
     const router: NextRouter = useRouter();
