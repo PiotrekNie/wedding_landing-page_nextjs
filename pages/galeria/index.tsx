@@ -311,6 +311,24 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
     window.location.href = "/galeria";
   };
 
+  console.log(hasReadPermission);
+
+  // if (!hasReadPermission) {
+  //   const router: NextRouter = useRouter();
+
+  //   return (
+  //     <>
+  //       {desktop && <Cursor />}
+  //       <Head>
+  //         <title>Dela &amp; Piotrek – Zaloguj się</title>
+  //         <meta name='robots' content='noindex' />
+  //         <Favicon />
+  //       </Head>
+  //       <Login redirectPath={router.asPath} />
+  //     </>
+  //   );
+  // }
+
   if (hasReadPermission) {
     return (
       <>
@@ -391,20 +409,6 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
       </>
     );
   }
-
-  const router: NextRouter = useRouter();
-
-  return (
-    <>
-      {desktop && <Cursor />}
-      <Head>
-        <title>Dela &amp; Piotrek – Zaloguj się</title>
-        <meta name='robots' content='noindex' />
-        <Favicon />
-      </Head>
-      <Login redirectPath={router.asPath} />
-    </>
-  );
 }
 
 export default Protected;
