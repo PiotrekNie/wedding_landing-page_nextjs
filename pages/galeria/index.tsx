@@ -315,11 +315,7 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
     console.log("hasReadPermission");
     // const router: NextRouter = useRouter();
 
-    return (
-      <>
-        <div>test router</div>
-      </>
-    );
+    return <div>test router</div>;
   }
 
   return (
