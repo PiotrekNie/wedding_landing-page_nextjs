@@ -1593,6 +1593,11 @@
   dependencies:
     "@types/sizzle" "*"
 
+"@types/js-cookie@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/js-cookie/-/js-cookie-3.0.2.tgz#451eaeece64c6bdac8b2dde0caab23b085899e0d"
+  integrity sha512-6+0ekgfusHftJNYpihfkMu8BWdeHs9EOJuGcSofErjstGPfPGEu9yTu4t460lTzzAMl2cM5zngQJqPMHbbnvYA==
+
 "@types/json-schema@*", "@types/json-schema@^7.0.9":
   version "7.0.9"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.9.tgz"
@@ -2368,6 +2373,11 @@ convert-source-map@1.7.0, convert-source-map@^1.7.0:
   integrity sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
   dependencies:
     safe-buffer "~5.1.1"
+
+cookie-cutter@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/cookie-cutter/-/cookie-cutter-0.2.0.tgz#5988f598b68c060a00ec8524ad6e6aa193e72244"
+  integrity sha512-eVyP5liHjDMCmGlp2OD+qoin5TJlwUBRjBKN8R2yJ3ePf8xqUtqmRP6e36ipe0nBm2lTiertH6iHPOptNQzAEw==
 
 cookie@^0.4.0, cookie@^0.4.1, cookie@^0.4.2:
   version "0.4.2"
@@ -3786,6 +3796,11 @@ js-base64@^2.1.9:
   resolved "https://registry.npmjs.org/js-base64/-/js-base64-2.6.4.tgz"
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
 
+js-cookie@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.1.tgz#9e39b4c6c2f56563708d7d31f6f5f21873a92414"
+  integrity sha512-+0rgsUXZu4ncpPxRL+lNEptWMOWl9etvPHc/koSRp6MPwpRYAhmk0dUG00J4bxVV3r9uUzfo24wW0knS07SKSw==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"
@@ -4203,6 +4218,20 @@ next-auth@^4.2.1:
     preact "^10.6.3"
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
+
+next-universal-cookie@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/next-universal-cookie/-/next-universal-cookie-3.0.1.tgz#79787d9cdf8bd68dc5b3573c598fd88ca454620a"
+  integrity sha512-oDRFYxd6ffmHZAcY/u0Hzt9MXfijOwIGjs3oZq4JpW7uXDJwWoHHKSmlDMuKBWaRXVbD5BtwxYX/qDXLkDJQxw==
+  dependencies:
+    cookie "^0.4.1"
+
+next-universal-cookies@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/next-universal-cookies/-/next-universal-cookies-1.1.1.tgz#51abf087ff6f64ce03dd2abb7be41fdb4a2f8beb"
+  integrity sha512-4h2eIWAixCqvUJbMWmrpfNyqXDpJT0NI6vvvf8yNxkFGcU7vX4x2hpKMiiz/agYU4H3yzW/Nm1BCPEUiyVFsdg==
+  dependencies:
+    cookie "^0.4.1"
 
 next@12.0.8:
   version "12.0.8"

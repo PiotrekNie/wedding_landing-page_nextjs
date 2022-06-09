@@ -19,6 +19,7 @@ import tw from "twin.macro";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { GraphQLClient } from "graphql-request";
+import cookie from "js-cookie";
 import Login from "../../components/login";
 import BlurImage from "../../components/gallery";
 import SCREENS from "../../components/screens/index";
@@ -159,7 +160,7 @@ const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = st
   `}
 `;
 
-export const getStaticProps: () => Promise<{
+export const getServerSideProps: () => Promise<{
   props: {
     data: GraphQLClient;
   };
@@ -312,10 +313,35 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
   };
 
   if (!hasReadPermission) {
-    console.log("hasReadPermission");
-    // const router: NextRouter = useRouter();
+    const router: NextRouter = useRouter();
 
-    return <div>test router</div>;
+    return (
+      <>
+        {desktop && <Cursor />}
+        <Head>
+          <title>Dela &amp; Piotrek – Zaloguj się</title>
+          <meta name='robots' content='noindex' />
+          <Favicon />
+        </Head>
+        <div className='flex items-cener'>
+          <button
+            type='button'
+            onClick={() => {
+              cookie.set("token", "ABCD", { expires: 1 / 24 });
+            }}>
+            Login
+          </button>
+          <button
+            type='button'
+            onClick={() => {
+              cookie.remove("token");
+            }}>
+            Logout
+          </button>
+        </div>
+        <Login redirectPath={router.asPath} />
+      </>
+    );
   }
 
   return (
