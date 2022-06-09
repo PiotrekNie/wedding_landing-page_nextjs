@@ -1,17 +1,7 @@
-import React, {
-  MouseEvent,
-  useEffect,
-  useState,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useRef,
-} from "react";
+import React, { useEffect, useState, Dispatch, SetStateAction, useContext, useRef } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { NextRouter, useRouter } from "next/router";
-import Cookies from "universal-cookie";
-import consts from "consts";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useMediaQuery } from "react-responsive";
 import styled, { StyledComponent } from "styled-components";
@@ -31,7 +21,7 @@ import Favicon from "../../components/favicon";
 gsap.registerPlugin(ScrollTrigger);
 
 interface Request {
-  req: { cookies: { token: string | unknown } };
+  req: { cookies: { token: string } };
 }
 interface Image {
   photos: {
@@ -48,7 +38,6 @@ export interface GalleryItems {
 }
 
 interface FunctionProps {
-  hasReadPermission: boolean;
   data: GalleryItems;
   allImages: GalleryItems;
   token: string;
@@ -170,17 +159,18 @@ export const getServerSideProps: ({ req }: Request) => Promise<{
 }> = async ({ req }: Request) => {
   const data: GraphQLClient = await GetGalleryItems(offset);
   const allImages: GraphQLClient = await GetGallery();
+  const tokenValue: string = req.cookies.token;
 
   return {
     props: {
       data,
       allImages,
-      token: req.cookies.token || "",
+      token: tokenValue === "dobrazabawa2022",
     },
   };
 };
 
-function Protected({ hasReadPermission, data, allImages, token }: FunctionProps) {
+function Protected({ data, allImages, token }: FunctionProps) {
   let img: HTMLImageElement;
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
@@ -305,18 +295,7 @@ function Protected({ hasReadPermission, data, allImages, token }: FunctionProps)
     );
   }, []);
 
-  const LogOut: (ev: MouseEvent<HTMLButtonElement>) => void = (
-    ev: MouseEvent<HTMLButtonElement>,
-  ) => {
-    ev.preventDefault();
-
-    const cookies: Cookies = new Cookies();
-
-    cookies.remove(consts.SiteReadCookie, { path: "/" });
-    window.location.href = "/galeria";
-  };
-
-  if (!hasReadPermission) {
+  if (!token) {
     const router: NextRouter = useRouter();
 
     return (
@@ -328,16 +307,16 @@ function Protected({ hasReadPermission, data, allImages, token }: FunctionProps)
           <Favicon />
         </Head>
         <div className='flex items-cener'>
+          <p>Token: {token}</p>
           <button
             type='button'
             onClick={() => {
-              // cookie.set("token", "ABCD", { expires: 1 / 24 });
               fetch("/api/login", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ token: "ABCD" }),
+                body: JSON.stringify({ token: "dobrazabawa2022" }),
               });
             }}>
             Login
@@ -381,7 +360,17 @@ function Protected({ hasReadPermission, data, allImages, token }: FunctionProps)
         </div>
         <button
           className='font-bold hover:underline'
-          onClick={(ev: MouseEvent<HTMLButtonElement>) => LogOut(ev)}
+          onClick={() => {
+            fetch("/api/logout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: "{}" }),
+            }).then(() => {
+              window.location.href = "/galeria";
+            });
+          }}
           onMouseEnter={() => cursorChangeHandler("hovered")}
           onMouseLeave={() => cursorChangeHandler("")}
           role='link'

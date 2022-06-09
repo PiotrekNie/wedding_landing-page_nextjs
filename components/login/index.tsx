@@ -1,6 +1,4 @@
 import React, { Dispatch, SetStateAction, useContext, useState } from "react";
-import Cookies from "universal-cookie";
-import consts from "consts";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import { MouseContext } from "../../context/mouse-context";
@@ -71,12 +69,15 @@ function Login({ redirectPath }: { redirectPath: string }) {
           type='submit'
           onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             e.preventDefault();
-
-            const cookies: Cookies = new Cookies();
-            cookies.set(consts.SiteReadCookie, password, {
-              path: "/",
+            fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ token: password }),
+            }).then(() => {
+              window.location.href = redirectPath ?? "/";
             });
-            window.location.href = redirectPath ?? "/";
           }}>
           Zaloguj się
         </ButtonItem>
