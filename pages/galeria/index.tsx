@@ -306,35 +306,6 @@ function Protected({ data, allImages, token }: FunctionProps) {
           <meta name='robots' content='noindex' />
           <Favicon />
         </Head>
-        <div className='flex items-cener'>
-          <p>Token: {token}</p>
-          <button
-            type='button'
-            onClick={() => {
-              fetch("/api/login", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ token: "dobrazabawa2022" }),
-              });
-            }}>
-            Login
-          </button>
-          <button
-            type='button'
-            onClick={() => {
-              fetch("/api/logout", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ token: "{}" }),
-              });
-            }}>
-            Logout
-          </button>
-        </div>
         <Login redirectPath={router.asPath} />
       </>
     );
