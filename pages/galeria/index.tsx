@@ -19,7 +19,6 @@ import tw from "twin.macro";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { GraphQLClient } from "graphql-request";
-import cookie from "js-cookie";
 import Login from "../../components/login";
 import BlurImage from "../../components/gallery";
 import SCREENS from "../../components/screens/index";
@@ -31,6 +30,9 @@ import Favicon from "../../components/favicon";
 
 gsap.registerPlugin(ScrollTrigger);
 
+interface Request {
+  req: { cookies: { token: string | unknown } };
+}
 interface Image {
   photos: {
     id: string;
@@ -49,6 +51,7 @@ interface FunctionProps {
   hasReadPermission: boolean;
   data: GalleryItems;
   allImages: GalleryItems;
+  token: string;
 }
 
 const offset: number = 0;
@@ -160,11 +163,11 @@ const Heading5: StyledComponent<"span", Record<string, unknown>, {}, never> = st
   `}
 `;
 
-export const getServerSideProps: () => Promise<{
+export const getServerSideProps: ({ req }: Request) => Promise<{
   props: {
     data: GraphQLClient;
   };
-}> = async () => {
+}> = async ({ req }: Request) => {
   const data: GraphQLClient = await GetGalleryItems(offset);
   const allImages: GraphQLClient = await GetGallery();
 
@@ -172,11 +175,12 @@ export const getServerSideProps: () => Promise<{
     props: {
       data,
       allImages,
+      token: req.cookies.token || "",
     },
   };
 };
 
-function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
+function Protected({ hasReadPermission, data, allImages, token }: FunctionProps) {
   let img: HTMLImageElement;
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
@@ -327,14 +331,27 @@ function Protected({ hasReadPermission, data, allImages }: FunctionProps) {
           <button
             type='button'
             onClick={() => {
-              cookie.set("token", "ABCD", { expires: 1 / 24 });
+              // cookie.set("token", "ABCD", { expires: 1 / 24 });
+              fetch("/api/login", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token: "ABCD" }),
+              });
             }}>
             Login
           </button>
           <button
             type='button'
             onClick={() => {
-              cookie.remove("token");
+              fetch("/api/logout", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token: "{}" }),
+              });
             }}>
             Logout
           </button>
