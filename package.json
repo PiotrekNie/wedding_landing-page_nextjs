@@ -83,5 +83,21 @@
     "postcss-preset-env": "^7.4.1",
     "precss": "^4.0.0",
     "prettier": "^2.5.1"
-  }
+  },
+  "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
+  "version": "1.0.0",
+  "main": ".eslintrc.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PiotrekNie/wedding_landing-page_nodejs.git"
+  },
+  "author": "Piotr Niemirski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PiotrekNie/wedding_landing-page_nodejs/issues"
+  },
+  "homepage": "https://github.com/PiotrekNie/wedding_landing-page_nodejs#readme"
 }
