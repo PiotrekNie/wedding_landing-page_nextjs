@@ -4,11 +4,15 @@ import Head from "next/head";
 import Image from "next/image";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Cursor from "../../components/coursor";
 import Favicon from "../../components/favicon";
 import SCREENS from "../../components/screens";
 import Header from "../../components/header";
 import { MouseContext } from "../../context/mouse-context";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never> = styled.main`
   ${tw`
@@ -43,6 +47,31 @@ function Live() {
   const logoRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // GSAP: Header Logo
+    const navAnimation: gsap.core.Tween = gsap.to(logoRef.current, {
+      scale: 0.6,
+      duration: 0.5,
+      ease: "Power2.easeOut",
+      paused: true,
+    });
+
+    ScrollTrigger.create({
+      trigger: document.body,
+      start: "100px top",
+      end: "bottom bottom",
+      onUpdate: ({ direction, isActive }: { direction: number; isActive: boolean }) => {
+        if (direction === -1) {
+          navAnimation.reverse();
+        }
+        if (direction === 1) {
+          navAnimation.play();
+        }
+        if (direction === 1 && isActive) {
+          navAnimation.play();
+        }
+      },
+    });
+
     setDesktop(isDesktop);
   }, []);
 
@@ -68,7 +97,7 @@ function Live() {
       <MainContainer>
         <IframeContainer>
           <iframe
-            src='https://www.youtube.com/embed/pCdoFZ76p3k'
+            src='https://www.youtube.com/embed/0gT5x-Holzc'
             title='YouTube video player'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
             allowFullScreen
