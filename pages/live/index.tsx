@@ -16,16 +16,20 @@ gsap.registerPlugin(ScrollTrigger);
 
 const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never> = styled.main`
   ${tw`
-  relative flex justify-center py-32 container
+  relative flex justify-center md:py-32 py-16 container
 `}
 `;
 
 const IframeContainer: StyledComponent<"div", Record<string, unknown>, {}, never> = styled.div`
-  padding-bottom: 42.25%;
+  padding-bottom: 56.25%;
 
   ${tw`
     relative h-0 overflow-hidden md:w-9/12 w-full
-  `}
+    `}
+
+  @media (min-width: ${SCREENS.md}) {
+    padding-bottom: 42.25%;
+  }
 
   iframe {
     ${tw`
