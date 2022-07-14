@@ -24,7 +24,7 @@ const IframeContainer: StyledComponent<"div", Record<string, unknown>, {}, never
   padding-bottom: 42.25%;
 
   ${tw`
-    relative h-0 overflow-hidden w-9/12
+    relative h-0 overflow-hidden md:w-9/12 w-full
   `}
 
   iframe {
