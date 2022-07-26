@@ -322,28 +322,6 @@ export default function Home({ data }: { data: Sections }) {
                         <span>zadzwoń :</span>
                       </span>
                     </Subtitle>
-                    <div ref={addToRefsArr}>
-                      <p>
-                        Delfina{" "}
-                        <a
-                          href='tel:+48508093384'
-                          className='btn ml-4'
-                          onMouseEnter={() => cursorChangeHandler("hovered")}
-                          onMouseLeave={() => cursorChangeHandler("")}>
-                          +48 508 093 384
-                        </a>
-                      </p>
-                      <p>
-                        Piotrek{" "}
-                        <a
-                          href='tel:+48509235952'
-                          className='btn ml-4'
-                          onMouseEnter={() => cursorChangeHandler("hovered")}
-                          onMouseLeave={() => cursorChangeHandler("")}>
-                          +48 509 235 952
-                        </a>
-                      </p>
-                    </div>
                   </div>
                 </div>
                 {desktop && (
