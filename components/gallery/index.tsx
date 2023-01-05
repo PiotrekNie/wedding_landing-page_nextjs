@@ -31,20 +31,20 @@ export default function BlurImage({
 
   return (
     <button
-      className='group'
+      className='group relative h-[450px] overflow-hidden'
       type='button'
       onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
 
         imageUrl(image.photos.url);
       }}>
-      <span className='w-full block aspect-w-1 aspect-h-1 xl:aspect-h-7 xl:aspect-w-8 bg-gray-200'>
+      <span className='w-full block absolute h-[450px] left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2'>
         <Image
           src={image.photos.url}
-          layout='fill'
-          objectFit='cover'
+          width={600}
+          height={500}
           className={cn(
-            "group-hover:opacity-75 duration-700 ease-in-out",
+            "group-hover:opacity-75 duration-700 ease-in-out h-[450px] w-full object-cover",
             isLoading ? "grayscale blur-2xl scale-110" : "grayscale-0 blur-0 scale-100",
           )}
           onLoadingComplete={() => setLoading(false)}

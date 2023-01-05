@@ -165,7 +165,7 @@ export const getServerSideProps: ({ req }: Request) => Promise<{
     props: {
       data,
       allImages,
-      token: tokenValue === "dobrazabawa2022",
+      token: tokenValue === "dobrazabawa22",
     },
   };
 };

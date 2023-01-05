@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-  MouseEvent,
-  useContext,
-} from "react";
+import React, { useContext } from "react";
+import Link from "next/link";
 import styled, { StyledComponent } from "styled-components";
 import tw from "twin.macro";
 import fluidType from "../fluid-typography";
@@ -53,32 +47,14 @@ export default function ScrollDown() {
   const {
     cursorChangeHandler,
   }: { cursorChangeHandler: (t: React.SetStateAction<string>) => void } = useContext(MouseContext);
-  const [anchorTarget, setAnchorTarget]: [
-    Element | unknown,
-    Dispatch<SetStateAction<Element | unknown>>,
-  ] = useState();
-
-  useEffect(() => {
-    setAnchorTarget(document.getElementById("timeline"));
-  }, ["timeline"]);
-
-  const handleClick: (ev: MouseEvent<HTMLAnchorElement>) => void = (
-    ev: MouseEvent<HTMLAnchorElement>,
-  ) => {
-    ev.preventDefault();
-
-    const target: Element = anchorTarget as HTMLElement;
-
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
-    <CTA
-      href='#timeline'
-      onClick={(ev: MouseEvent<HTMLAnchorElement>) => handleClick(ev)}
-      onMouseEnter={() => cursorChangeHandler("hovered")}
-      onMouseLeave={() => cursorChangeHandler("")}>
-      Zapraszamy <img src='/images/arrow.svg' alt='Zjedź niżej' />
-    </CTA>
+    <Link href='/galeria'>
+      <CTA
+        onMouseEnter={() => cursorChangeHandler("hovered")}
+        onMouseLeave={() => cursorChangeHandler("")}>
+        Zobacz galerię
+      </CTA>
+    </Link>
   );
 }
