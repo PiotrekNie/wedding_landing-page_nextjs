@@ -66,7 +66,7 @@ const MainContainer: StyledComponent<"main", Record<string, unknown>, {}, never>
 `}
 
   &:before,
-&:after {
+  &:after {
     transform: translate(-50%, -50%);
 
     ${tw`
@@ -160,17 +160,19 @@ export const getServerSideProps: ({ req }: Request) => Promise<{
   const data: GraphQLClient = await GetGalleryItems(offset);
   const allImages: GraphQLClient = await GetGallery();
   const tokenValue: string = req.cookies.token;
+  const token: string | undefined = process.env.NEXT_PUBLIC_TOKEN;
 
   return {
     props: {
       data,
       allImages,
-      token: tokenValue === "dobrazabawa22",
+      token: tokenValue === token,
     },
   };
 };
 
 function Protected({ data, allImages, token }: FunctionProps) {
+  const router: NextRouter = useRouter();
   let img: HTMLImageElement;
   const [finish, setFinish]: [boolean, Dispatch<SetStateAction<boolean>>] =
     useState<boolean>(false);
@@ -229,6 +231,12 @@ function Protected({ data, allImages, token }: FunctionProps) {
 
   useEffect(() => {
     setHasMore(allImages.weddingGalleries.length > images.length);
+
+    if (!hasMore) {
+      window.dataLayer?.push({
+        event: "GalleryEnd",
+      });
+    }
   }, [images]);
 
   useEffect(() => {
@@ -296,8 +304,6 @@ function Protected({ data, allImages, token }: FunctionProps) {
   }, []);
 
   if (!token) {
-    const router: NextRouter = useRouter();
-
     return (
       <>
         {desktop && <Cursor />}
@@ -339,7 +345,7 @@ function Protected({ data, allImages, token }: FunctionProps) {
               },
               body: JSON.stringify({ token: "{}" }),
             }).then(() => {
-              window.location.href = "/galeria";
+              router.push("/galeria");
             });
           }}
           onMouseEnter={() => cursorChangeHandler("hovered")}

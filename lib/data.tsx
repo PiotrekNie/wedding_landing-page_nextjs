@@ -23,7 +23,7 @@ export const GetGallery: () => Promise<GraphQLClient> = async () => {
           fileName
         }
       }
-      weddingGalleries {
+      weddingGalleries(first: 1000) {
         id
       }
     }
