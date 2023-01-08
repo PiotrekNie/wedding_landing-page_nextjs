@@ -51,6 +51,7 @@ export default function ScrollDown() {
   return (
     <Link href='/galeria'>
       <CTA
+        className='cursor-pointer'
         onMouseEnter={() => cursorChangeHandler("hovered")}
         onMouseLeave={() => cursorChangeHandler("")}>
         Zobacz galerię

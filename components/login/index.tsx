@@ -71,6 +71,9 @@ function Login({ redirectPath }: { redirectPath: string }) {
         return;
       }
 
+      window.dataLayer?.push({
+        event: "LoginSuccess",
+      });
       toast.success("Zapraszamy :)");
       router.push(href);
     });
