@@ -7,7 +7,6 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
-import Script from "next/script";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -19,14 +18,11 @@ class MyDocument extends Document {
     return (
       <Html lang='pl'>
         <Head>
-          <Script
-            dangerouslySetInnerHTML={{
-              __html:
-                "(function(w,l){" +
-                "w[l] = w[l] || [];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});" +
-                "})(window,'dataLayer');",
-            }}
-          />
+          <script>
+            {"(function(w,l){" +
+              "w[l] = w[l] || [];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});" +
+              "})(window,'dataLayer');"}
+          </script>
         </Head>
         <body>
           <Main />
