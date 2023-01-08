@@ -36,6 +36,9 @@ module.exports = {
       xxl: "1536px",
     },
     extend: {
+      content: {
+        dp: "url('/images/dp.svg')",
+      },
       colors: {
         green: {
           100: "#96b9ba",
